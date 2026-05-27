@@ -16,20 +16,49 @@ source "/home/fjordan/Documentos/Estudios/Sport Data Campus/ml-env/bin/activate"
 - **Docker** — Airflow corre en contenedor, runtime `astrocrpublic.azurecr.io/runtime:3.2-4`
 
 ## Comandos clave
+
+### Entorno virtual (siempre activar primero)
 ```bash
-# Airflow (Astro)
-cd airflow && astro dev start          # levanta Airflow en Docker
-cd airflow && astro dev stop
-cd airflow && astro dev ps             # UI: http://airflow.localhost:6563
+source "/home/fjordan/Documentos/Estudios/Sport Data Campus/ml-env/bin/activate"
+```
 
-# dbt (requiere DUCKDB_PATH exportada del .env)
-export $(grep -v '^#' .env | xargs)
-cd dbt && dbt run --profiles-dir . --target dev
-cd dbt && dbt test --profiles-dir . --target dev
-
-# Pipeline Python
+### Python pipeline (desde raíz del proyecto)
+```bash
 python -m src.ingestion.generate_mock_data
-python -m src.quality.quality_report
+python -m src.ingestion.crm_ingestion
+python -m src.ingestion.billing_ingestion
+python -m src.ingestion.product_events_ingestion
+python -m src.ingestion.marketing_ingestion
+python -m src.ingestion.cs_ingestion
+```
+
+### dbt (desde carpeta dbt/ con .env cargado)
+```bash
+export $(grep -v '^#' ../.env | xargs)
+dbt debug
+dbt seed
+dbt run --select staging
+dbt run --select intermediate
+dbt run --select marts
+dbt test
+dbt docs generate && dbt docs serve
+```
+
+### Airflow (desde carpeta airflow/)
+```bash
+astro dev start      # levantar
+astro dev stop       # parar
+astro dev restart    # reiniciar
+astro dev logs       # ver logs
+# UI: http://airflow.localhost:6563
+# Usuario: admin / Password: admin
+```
+
+### Git
+```bash
+git add . && git status
+git commit -m "mensaje"
+git log --oneline
 ```
 
 ## Estructura

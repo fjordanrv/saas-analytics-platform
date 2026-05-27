@@ -128,3 +128,10 @@ porque Databricks maneja múltiples conexiones simultáneas.
 6. Crear cuenta Databricks Community Edition
 7. Migrar de DuckDB a Databricks (solo cambiar .env)
 8. Dashboards en Figma/Canva con los KPIs
+
+### Errores resueltos en Airflow (2026-05-27)
+- PermissionError logs/ → chmod 777 + detección Docker en logger.py
+- DuckDB lock conflict → ingestas en secuencia en DAG
+- PermissionError dbt/logs/ → chmod 777 dbt/
+- Volumen Docker → docker-compose.override.yml
+- profiles.yml → env_var() con fallback Docker
