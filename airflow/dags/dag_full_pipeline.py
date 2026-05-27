@@ -94,12 +94,8 @@ with DAG(
 
     pipeline_success = EmptyOperator(task_id="pipeline_success")
 
-    # Dependencias
-    start >> [ingest_crm, ingest_billing, ingest_events,
-              ingest_marketing, ingest_cs]
-
-    [ingest_crm, ingest_billing, ingest_events,
-     ingest_marketing, ingest_cs] >> dbt_staging
+    # Dependencias — ingestas en SECUENCIA por limitación de DuckDB (una sola conexión)
+    start >> ingest_crm >> ingest_billing >> ingest_events >> ingest_marketing >> ingest_cs >> dbt_staging
 
     dbt_staging >> dbt_intermediate
     dbt_intermediate >> dbt_marts

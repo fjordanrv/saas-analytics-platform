@@ -113,6 +113,12 @@ Auto mode      → solo para tareas con múltiples archivos
 - Volumen Docker montado correctamente
 - logger.py detecta Docker vs local automáticamente
 
+NOTA IMPORTANTE — DuckDB limitación de concurrencia:
+DuckDB solo permite una conexión simultánea.
+En Airflow las ingestas corren en SECUENCIA no en paralelo.
+Cuando migremos a Databricks se pueden volver a paralelizar
+porque Databricks maneja múltiples conexiones simultáneas.
+
 ### Pendiente al retomar
 1. Verificar que el DAG corre completo sin errores en Airflow
 2. Capturar screenshots de Airflow UI para LinkedIn
