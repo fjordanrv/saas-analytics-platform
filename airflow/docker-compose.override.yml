@@ -1,0 +1,10 @@
+services:
+  scheduler:
+    volumes:
+      - /home/fjordan/Documentos/Proyectos/Personales/proyectos-principales/saas-analytics-platform:/usr/local/airflow/project
+  dag-processor:
+    volumes:
+      - /home/fjordan/Documentos/Proyectos/Personales/proyectos-principales/saas-analytics-platform:/usr/local/airflow/project
+  triggerer:
+    volumes:
+      - /home/fjordan/Documentos/Proyectos/Personales/proyectos-principales/saas-analytics-platform:/usr/local/airflow/project

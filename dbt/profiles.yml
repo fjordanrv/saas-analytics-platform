@@ -3,14 +3,14 @@ saas_analytics:
   outputs:
     dev:
       type: duckdb
-      path: /home/fjordan/Documentos/Proyectos/Personales/proyectos-principales/saas-analytics-platform/data/cloudmetrics.duckdb
+      path: "{{ env_var('DUCKDB_PATH', '/usr/local/airflow/project/data/cloudmetrics.duckdb') }}"
       threads: 4
       schema: analytics
     prod:
       type: databricks
-      host: ""
-      http_path: ""
-      token: ""
-      catalog: main
+      host: "{{ env_var('DATABRICKS_HOST', '') }}"
+      http_path: "{{ env_var('DATABRICKS_HTTP_PATH', '') }}"
+      token: "{{ env_var('DATABRICKS_TOKEN', '') }}"
+      catalog: "{{ env_var('DATABRICKS_CATALOG', 'main') }}"
       schema: analytics
       threads: 8

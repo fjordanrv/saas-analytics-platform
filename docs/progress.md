@@ -46,8 +46,6 @@
 
 ---
 
----
-
 ## 2026-05-24
 
 ### Completado
@@ -80,33 +78,63 @@
 
 ---
 
+## 2026-05-27
+
+### Completado
+- [x] **dbt configurado completo**:
+  - `dbt_project.yml`, `profiles.yml` (con `env_var()` para local y Docker), `packages.yml`
+  - `dbt deps` → `dbt_utils 1.3.3` instalado
+  - `dbt debug` → All checks passed
+  - `dbt seed` → `dim_plans` cargado (4 filas)
+- [x] **Capa Silver — Staging** (8 modelos, 25 tests, PASS=25):
+  - `stg_customers`, `stg_companies`, `stg_subscriptions`, `stg_payments`
+  - `stg_product_events`, `stg_marketing_leads`, `stg_nps_surveys`, `stg_support_tickets`
+- [x] **Capa Silver — Intermediate** (3 modelos, 8 tests, PASS=8):
+  - `int_customer_lifecycle`, `int_subscription_metrics`, `int_product_engagement`
+- [x] **Capa Gold — Marts** (7 modelos, 21 tests, PASS=21):
+  - `finance/`: `fct_mrr`, `fct_revenue_expansion`
+  - `growth/`: `fct_customer_acquisition`, `fct_activation_funnel`
+  - `retention/`: `fct_churn`, `fct_cohort_retention`, `fct_ltv`
+- [x] **54 dbt tests pasando** en total (staging + intermediate + marts)
+- [x] **Airflow configurado con Astro CLI**:
+  - `airflow/Dockerfile` — 3 ENV vars añadidas (`PROJECT_ROOT`, `DBT_PROJECT_DIR`, `DBT_PROFILES_DIR`)
+  - `airflow/requirements.txt` — deps de dbt + duckdb para el contenedor
+  - `airflow/dags/dag_full_pipeline.py` — DAG completo Bronze → Silver → Gold, schedule `0 6 * * *`
+  - `airflow/airflow_settings.yaml` — 3 variables Airflow inyectadas al arrancar
+  - `airflow/docker-compose.override.yml` — monta proyecto en `/usr/local/airflow/project`
+  - `airflow/.env` — `DUCKDB_PATH` para el contenedor
+  - DAG de ejemplo de Astronomer eliminado
+- [x] **Airflow corriendo** — UI en `http://airflow.localhost:6563`
+- [x] Commit `9479c17` — Silver y Gold layers (32 archivos, 1,019 inserciones)
+
+### Decisiones técnicas
+- **`FROM bronze.tabla`** en staging en lugar de `{{ source() }}` — tablas Bronze creadas directamente por Python en DuckDB, no vía dbt sources
+- **`env_var('DUCKDB_PATH', fallback_docker)`** en `profiles.yml` — un solo archivo funciona en local (lee `.env`) y en Docker (lee `airflow/.env`); el fallback apunta al path del contenedor
+- **`docker-compose.override.yml`** para montar el proyecto en el contenedor — Astro CLI solo monta `airflow/`; sin el override, `PROJECT_ROOT` no existe dentro del Docker
+- **Imports Airflow 3.x**: `airflow.providers.standard.operators.bash/empty` en lugar de `airflow.operators.*` (deprecado en runtime 3.2)
+- **`dbt/.user.yml`**: archivo auto-generado por dbt con UUID local — nunca commitear, añadido a `.gitignore`
+
+### Problemas resueltos y cómo
+
+| Problema | Causa | Solución |
+|---|---|---|
+| `dbt/.user.yml` en staging | dbt lo genera automáticamente al correr cualquier comando | Detectado antes del commit, añadido a `.gitignore` y sacado del stage con `git restore --staged` |
+| `payment_status` values — `data_sources.md` decía `success` pero los tests pasaron con `paid` | El mock data generator usó `paid` en lugar de `success` | Verificado con `SELECT DISTINCT status FROM bronze.payments` antes de escribir el `schema.yml` — los valores reales del Bronze mandan |
+| `int_customer_lifecycle` podría romper test `unique` si un customer tiene >1 suscripción activa | El JOIN con `stg_subscriptions WHERE status='active'` duplicaría filas | Verificado con query explícita: ningún customer tiene >1 suscripción activa → test seguro |
+| `schema.yml` de marts con entrada rota `- na_ltv` | Typo en el prompt original (faltaba `name:`) y ubicado en `finance/` siendo que `fct_ltv` va en `retention/` | Corregido a `- name: fct_ltv` y movido a `retention/schema.yml` donde corresponde |
+| `dbt debug` fallaba sin `DUCKDB_PATH` exportada localmente | `env_var()` tomaba el fallback Docker (`/usr/local/airflow/project/...`) que no existe en local | Solución: `export $(grep -v '^#' .env | xargs)` antes de cualquier comando `dbt` en local |
+| `ingest_billing` fallaba en Airflow con `cd: /usr/local/airflow/project: No such file or directory` | Astro CLI solo monta `airflow/` en el contenedor; `src/` y `dbt/` viven en el directorio padre | Creado `airflow/docker-compose.override.yml` que monta el proyecto raíz en `/usr/local/airflow/project` en los servicios `scheduler`, `dag-processor` y `triggerer` |
+| Warnings de imports deprecados en Airflow 3.x | `airflow.operators.bash` y `airflow.operators.empty` están deprecados en runtime 3.2 | Actualizados a `airflow.providers.standard.operators.bash/empty` en `dag_full_pipeline.py` |
+| `docker-compose.override.yml` warning `version is obsolete` | Docker Compose moderno ignora el campo `version:` | Eliminada la línea `version: "3.1"` del override |
+
+---
+
 ## Pendiente
 
-### Config & docs
-- [ ] `README.md` principal con diagrama de arquitectura
-
-### dbt
-- [ ] `dbt/dbt_project.yml` + `profiles.yml` (target DuckDB)
-- [ ] `dbt/packages.yml` + `dbt deps`
-- [ ] Staging models — 7 views sobre Bronze:
-  - `stg_customers`, `stg_companies`
-  - `stg_subscriptions`, `stg_payments`
-  - `stg_product_events`, `stg_marketing_leads`
-  - `stg_nps_surveys`, `stg_support_tickets`
-- [ ] Intermediate models:
-  - `int_customer_activity`, `int_subscription_movements`, `int_marketing_attribution`
-- [ ] Mart models:
-  - `finance/`: `fct_mrr`, `fct_nrr`
-  - `growth/`: `fct_activation`, `fct_new_customers`
-  - `retention/`: `fct_churn`, `fct_cohort`, `fct_ltv`
-  - `product/`: `fct_engagement`, `fct_feature_adoption`
-  - `customer_success/`: `fct_health_score`, `fct_nps`, `fct_ttr`
-- [ ] Tests (`not_null`, `unique`, `accepted_values`, `relationships`) y macros
-
-### Airflow
-- [ ] DAG principal (`dag_full_pipeline.py`)
-- [ ] DAGs individuales por capa
-- [ ] `airflow_settings.yaml` con conexión DuckDB
+### Airflow — verificación y ejecución
+- [ ] Actualizar `dbt/profiles.yml` con `env_var()` *(hecho localmente, pendiente verificar en contenedor)*
+- [ ] Verificar DAG completo en `http://airflow.localhost:6563`
+- [ ] Ejecutar pipeline completo desde Airflow (trigger manual)
 
 ### Código fuente (`src/`)
 - [ ] `src/quality/quality_report.py`
@@ -116,3 +144,10 @@
 - [ ] `02_silver_transformation.ipynb`
 - [ ] `03_gold_kpis.ipynb`
 - [ ] `04_exploratory_analysis.ipynb`
+
+### Documentación & publicación
+- [ ] `README.md` profesional con diagrama de arquitectura
+- [ ] Cuenta GitHub + push del repositorio
+
+### Producción
+- [ ] Cuenta Databricks + migración (cambio de `.env` únicamente)
