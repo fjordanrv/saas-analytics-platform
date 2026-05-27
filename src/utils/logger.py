@@ -19,8 +19,12 @@ if TYPE_CHECKING:
 load_dotenv()
 
 _PROJECT_ROOT = Path(__file__).resolve().parents[2]
-_LOGS_DIR = _PROJECT_ROOT / "logs"
-_LOGS_DIR.mkdir(exist_ok=True)
+# En Docker usar /tmp para evitar problemas de permisos con el volumen montado
+if os.path.exists("/usr/local/airflow"):
+    _LOGS_DIR = Path("/tmp/airflow_logs")
+else:
+    _LOGS_DIR = _PROJECT_ROOT / "logs"
+_LOGS_DIR.mkdir(parents=True, exist_ok=True)
 
 _LOG_LEVEL: str = os.getenv("LOG_LEVEL", "INFO").upper()
 
