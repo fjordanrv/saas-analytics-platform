@@ -63,7 +63,7 @@ flowchart TD
 
     %% Motor de datos
     subgraph ENGINE["Motor de Datos"]
-        DUCKDB["DuckDB 1.3.1\n(dev — local)"]
+        DUCKDB["DuckDB 1.5.3\n(dev — local)"]
         DATABRICKS["Databricks\n(prod — cloud)"]
     end
 
@@ -158,7 +158,7 @@ dag_full_pipeline.py
 
 | Aspecto | Dev | Prod |
 |---|---|---|
-| Motor SQL | DuckDB 1.3.1 (local) | Databricks (cloud) |
+| Motor SQL | DuckDB 1.5.3 (local) | Databricks (cloud) |
 | dbt target | `dev` | `prod` |
 | Airflow | Astro CLI + Docker local | Managed Airflow (cloud) |
 | Config | `.env` con `DUCKDB_PATH` | Variables de entorno cloud |

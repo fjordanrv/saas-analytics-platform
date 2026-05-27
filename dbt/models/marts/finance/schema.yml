@@ -1,0 +1,25 @@
+version: 2
+
+models:
+  - name: fct_mrr
+    description: "MRR mensual con movimientos New/Expansion/Contraction/Churned"
+    columns:
+      - name: customer_id
+        tests: [not_null]
+      - name: mrr
+        tests: [not_null]
+      - name: mrr_movement_type
+        tests:
+          - accepted_values:
+              values: ["new","expansion","contraction",
+                       "churned","retained"]
+
+  - name: fct_revenue_expansion
+    description: "NRR, ARR y Net New MRR agrupados por mes"
+    columns:
+      - name: month
+        tests: [not_null, unique]
+      - name: total_mrr
+        tests: [not_null]
+      - name: arr
+        tests: [not_null]

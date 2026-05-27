@@ -46,43 +46,70 @@
 
 ---
 
+---
+
+## 2026-05-24
+
+### Completado
+- [x] `.env` + `.env.example` creados — DB_TYPE, DUCKDB_PATH, vars Databricks vacías, dbt/Airflow/GitHub config
+- [x] `.gitignore` creado — cubre `.env`, `data/`, `*.duckdb`, Python, dbt, Airflow, Jupyter, IDE, logs
+- [x] `src/utils/logger.py` — logger Loguru con formato enriquecido, rotación diaria, bind por módulo, fix `TYPE_CHECKING` para `Logger` type hint
+- [x] `src/utils/database.py` — singleton `DatabaseConnection`, soporte DuckDB + Databricks (dispatch por `DB_TYPE`), métodos `execute`, `execute_df`, `create_schema`
+- [x] `src/__init__.py`, `src/utils/__init__.py`, `src/ingestion/__init__.py`, `src/quality/__init__.py` creados
+- [x] `src/ingestion/generate_mock_data.py` — 79,342 filas en 8 CSVs + product_events.json:
+  - `crm_companies.csv` (500), `crm_customers.csv` (1,000)
+  - `billing_subscriptions.csv` (1,000), `billing_payments.csv` (22,842)
+  - `product_events.csv` (50,000) — timestamps vectorizados, 70% weekday, 60% biz hours
+  - `marketing_leads.csv` (3,000), `nps_surveys.csv` (1,500), `support_tickets.csv` (1,000)
+- [x] `src/quality/data_quality_checks.py` — `DataQualityChecker` con method chaining:
+  - `check_nulls`, `check_duplicates`, `check_value_ranges`, `check_referential_integrity`, `check_date_consistency`
+  - `QualityReport.print_summary()` con tabla Rich (fix `escape()` para markup de columnas)
+- [x] `src/ingestion/crm_ingestion.py` → `bronze.companies` (500) + `bronze.customers` (1,000)
+- [x] `src/ingestion/billing_ingestion.py` → `bronze.subscriptions` (1,000) + `bronze.payments` (22,842)
+- [x] `src/ingestion/product_events_ingestion.py` → `bronze.product_events` (50,000)
+- [x] `src/ingestion/marketing_ingestion.py` → `bronze.marketing_leads` (3,000)
+- [x] `src/ingestion/cs_ingestion.py` → `bronze.nps_surveys` (1,500) + `bronze.support_tickets` (1,000)
+- [x] **Capa Bronze completa** — 8 tablas, 79,342 filas, 100% quality score en todas
+- [x] `git init` + primer commit (`95a24de`) — 33 archivos, 3,965 inserciones
+
+### Decisiones técnicas
+- **`conn.register("_bronze_tmp", df)` + `CREATE OR REPLACE TABLE`**: patrón para insertar DataFrames en DuckDB sin dependencia de SQLAlchemy
+- **`from __future__ import annotations` + `TYPE_CHECKING`**: necesario para que Loguru's `Logger` type hint no falle en runtime (loguru 0.7.3 solo exporta `Logger` en stubs `.pyi`)
+- **`pd.Series()` wrapper** sobre `DatetimeIndex` para habilitar el accessor `.dt` en generación vectorizada de eventos
+- **Patrón ingesta unificado**: `read_source → validate_schema → quality_checks → add_bronze_metadata → write_bronze` replicado en los 5 scripts
+
+---
+
 ## Pendiente
 
 ### Config & docs
-- [ ] `.env` + `.env.example`
-- [ ] `.gitignore`
 - [ ] `README.md` principal con diagrama de arquitectura
-- [ ] `git init` + primer commit
-
-### Código fuente (`src/`)
-- [ ] `src/utils/logger.py` — logger con loguru
-- [ ] `src/utils/database.py` — conexión DuckDB (singleton, compatible con Databricks)
-- [ ] `src/ingestion/generate_mock_data.py` — 1K customers, 50K events, etc.
-- [ ] `src/ingestion/crm_ingestion.py`
-- [ ] `src/ingestion/billing_ingestion.py`
-- [ ] `src/ingestion/product_events_ingestion.py`
-- [ ] `src/ingestion/marketing_ingestion.py`
-- [ ] `src/quality/data_quality_checks.py`
-- [ ] `src/quality/quality_report.py`
-- [ ] `__init__.py` en cada módulo
-
-### SQL
-- [ ] `sql/bronze/create_bronze_tables.sql`
-- [ ] `sql/silver/` — transformaciones por entidad
-- [ ] `sql/gold/` — MRR, Churn, LTV, Activation, Cohort
 
 ### dbt
 - [ ] `dbt/dbt_project.yml` + `profiles.yml` (target DuckDB)
 - [ ] `dbt/packages.yml` + `dbt deps`
-- [ ] Staging models (5 modelos — views sobre Bronze)
-- [ ] Intermediate models (3 modelos)
-- [ ] Mart models: finance (fct_mrr, fct_nrr), growth (fct_activation), retention (fct_churn, fct_cohort, fct_ltv)
-- [ ] Tests y macros
+- [ ] Staging models — 7 views sobre Bronze:
+  - `stg_customers`, `stg_companies`
+  - `stg_subscriptions`, `stg_payments`
+  - `stg_product_events`, `stg_marketing_leads`
+  - `stg_nps_surveys`, `stg_support_tickets`
+- [ ] Intermediate models:
+  - `int_customer_activity`, `int_subscription_movements`, `int_marketing_attribution`
+- [ ] Mart models:
+  - `finance/`: `fct_mrr`, `fct_nrr`
+  - `growth/`: `fct_activation`, `fct_new_customers`
+  - `retention/`: `fct_churn`, `fct_cohort`, `fct_ltv`
+  - `product/`: `fct_engagement`, `fct_feature_adoption`
+  - `customer_success/`: `fct_health_score`, `fct_nps`, `fct_ttr`
+- [ ] Tests (`not_null`, `unique`, `accepted_values`, `relationships`) y macros
 
 ### Airflow
 - [ ] DAG principal (`dag_full_pipeline.py`)
 - [ ] DAGs individuales por capa
 - [ ] `airflow_settings.yaml` con conexión DuckDB
+
+### Código fuente (`src/`)
+- [ ] `src/quality/quality_report.py`
 
 ### Notebooks
 - [ ] `01_bronze_ingestion.ipynb`

@@ -1,16 +1,19 @@
 # SaaS Analytics Platform — CloudMetrics Inc.
 
+## ENTORNO VIRTUAL
+> **ENTORNO VIRTUAL: usar SIEMPRE `/home/fjordan/Documentos/Estudios/Sport Data Campus/ml-env`**
+> **NUNCA crear un entorno virtual nuevo dentro del proyecto.**
+
+```bash
+source "/home/fjordan/Documentos/Estudios/Sport Data Campus/ml-env/bin/activate"
+```
+
 ## Stack
-- **Python 3.12** — venv: `ml-env` (`/home/fjordan/Documentos/Estudios/Sport Data Campus/ml-env`)
+- **Python 3.12** — venv externo: `/home/fjordan/Documentos/Estudios/Sport Data Campus/ml-env`
 - **DuckDB 1.5.3** — base de datos local (reemplaza Databricks en dev)
 - **dbt-duckdb 1.9.4** — transformaciones Bronze → Silver → Gold
 - **Airflow vía Astro CLI** — orquestación (`airflow/` gestionado por Astro)
 - **Docker** — Airflow corre en contenedor, runtime `astrocrpublic.azurecr.io/runtime:3.2-4`
-
-## Activar entorno
-```bash
-source "/home/fjordan/Documentos/Estudios/Sport Data Campus/ml-env/bin/activate"
-```
 
 ## Comandos clave
 ```bash

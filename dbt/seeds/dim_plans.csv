@@ -1,0 +1,5 @@
+plan_id,plan_name,tier,mrr_min,mrr_max,max_users,features
+1,Starter,1,49,99,5,Basic
+2,Pro,2,149,299,25,Advanced
+3,Business,3,499,999,100,Premium
+4,Enterprise,4,1999,4999,999,Enterprise

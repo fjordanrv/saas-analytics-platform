@@ -35,3 +35,4 @@ airflow/airflow.db
 .vscode/
 .idea/
 *.swp
+dbt/.user.yml

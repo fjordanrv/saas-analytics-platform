@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: fct_churn
+    description: "Logo Churn Rate y Revenue Churn Rate por mes y segmento"
+    columns:
+      - name: month
+        tests: [not_null]
+      - name: segment
+        tests: [not_null]
+      - name: logo_churn_rate_pct
+        tests: [not_null]
+
+  - name: fct_cohort_retention
+    description: "Cohort Retention Rate mensual — 13 meses de vida por cohorte"
+    columns:
+      - name: cohort_month
+        tests: [not_null]
+      - name: months_since_signup
+        tests: [not_null]
+      - name: retention_rate_pct
+        tests: [not_null]
+
+  - name: fct_ltv
+    description: "LTV, LTV/CAC y Payback Period por segmento y plan"
+    columns:
+      - name: segment
+        tests: [not_null]
+      - name: ltv
+        tests: [not_null]

@@ -1,0 +1,31 @@
+version: 2
+
+models:
+  - name: int_customer_lifecycle
+    description: "Customer enriquecido con company, subscription y campos calculados"
+    columns:
+      - name: customer_id
+        tests: [not_null, unique]
+      - name: plan_tier
+        tests:
+          - accepted_values:
+              values: [1, 2, 3, 4]
+
+  - name: int_subscription_metrics
+    description: "Métricas de suscripciones y pagos por customer"
+    columns:
+      - name: customer_id
+        tests: [not_null]
+      - name: mrr_movement_type
+        tests:
+          - accepted_values:
+              values: ["new","expansion","contraction",
+                       "churned","retained"]
+
+  - name: int_product_engagement
+    description: "Métricas de engagement de producto últimos 30 días"
+    columns:
+      - name: customer_id
+        tests: [not_null, unique]
+      - name: engagement_score
+        tests: [not_null]

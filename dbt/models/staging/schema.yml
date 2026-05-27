@@ -1,0 +1,77 @@
+version: 2
+
+models:
+  - name: stg_customers
+    description: "Clientes del CRM — limpieza y normalización básica"
+    columns:
+      - name: customer_id
+        tests: [not_null, unique]
+      - name: email
+        tests: [not_null]
+      - name: plan
+        tests:
+          - accepted_values:
+              values: ["Starter","Pro","Business","Enterprise"]
+      - name: status
+        tests:
+          - accepted_values:
+              values: ["active","churned","trial"]
+      - name: mrr
+        tests: [not_null]
+
+  - name: stg_companies
+    description: "Empresas del CRM"
+    columns:
+      - name: company_id
+        tests: [not_null, unique]
+
+  - name: stg_subscriptions
+    description: "Suscripciones del sistema de billing"
+    columns:
+      - name: sub_id
+        tests: [not_null, unique]
+      - name: customer_id
+        tests: [not_null]
+      - name: mrr
+        tests: [not_null]
+
+  - name: stg_payments
+    description: "Pagos del sistema de billing"
+    columns:
+      - name: payment_id
+        tests: [not_null, unique]
+      - name: payment_status
+        tests:
+          - accepted_values:
+              values: ["paid","failed","refunded"]
+
+  - name: stg_product_events
+    description: "Eventos de producto — acciones de usuarios"
+    columns:
+      - name: event_id
+        tests: [not_null, unique]
+      - name: event_type
+        tests:
+          - accepted_values:
+              values: ["login","feature_use","export",
+                       "api_call","invite","settings","billing"]
+
+  - name: stg_marketing_leads
+    description: "Leads de la plataforma de marketing"
+    columns:
+      - name: lead_id
+        tests: [not_null, unique]
+
+  - name: stg_nps_surveys
+    description: "Encuestas NPS de Customer Success"
+    columns:
+      - name: nps_id
+        tests: [not_null, unique]
+      - name: nps_score
+        tests: [not_null]
+
+  - name: stg_support_tickets
+    description: "Tickets de soporte de Customer Success"
+    columns:
+      - name: ticket_id
+        tests: [not_null, unique]

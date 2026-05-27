@@ -1,0 +1,16 @@
+saas_analytics:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: /home/fjordan/Documentos/Proyectos/Personales/proyectos-principales/saas-analytics-platform/data/cloudmetrics.duckdb
+      threads: 4
+      schema: analytics
+    prod:
+      type: databricks
+      host: ""
+      http_path: ""
+      token: ""
+      catalog: main
+      schema: analytics
+      threads: 8

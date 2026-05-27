@@ -1,0 +1,20 @@
+version: 2
+
+models:
+  - name: fct_customer_acquisition
+    description: "CAC, conversion rate y métricas de adquisición por mes y canal"
+    columns:
+      - name: month
+        tests: [not_null]
+      - name: channel
+        tests: [not_null]
+      - name: total_leads
+        tests: [not_null]
+
+  - name: fct_activation_funnel
+    description: "Funnel de activación — 3 pasos por customer"
+    columns:
+      - name: customer_id
+        tests: [not_null, unique]
+      - name: is_activated
+        tests: [not_null]
