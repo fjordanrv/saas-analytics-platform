@@ -183,9 +183,8 @@ class BillingIngestion:
             table_name: Nombre completo de la tabla (ej. 'bronze.subscriptions').
         """
         self.db.create_schema("bronze")
-        self.db.conn.register("_bronze_tmp", df)
-        self.db.execute(f"CREATE OR REPLACE TABLE {table_name} AS SELECT * FROM _bronze_tmp")
-        self.log.info(f"Escrito en DuckDB: {table_name} ({len(df):,} filas)")
+        self.db.write_dataframe(df, table_name)
+        self.log.info(f"Escrito en Bronze: {table_name} ({len(df):,} filas)")
 
     # ── Métodos de ingesta ────────────────────────────────────────────────────
 

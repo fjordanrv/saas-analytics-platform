@@ -112,9 +112,8 @@ class MarketingIngestion:
     def write_bronze(self, df: pd.DataFrame, table_name: str) -> None:
         """Escribe el DataFrame en DuckDB como tabla Bronze."""
         self.db.create_schema("bronze")
-        self.db.conn.register("_bronze_tmp", df)
-        self.db.execute(f"CREATE OR REPLACE TABLE {table_name} AS SELECT * FROM _bronze_tmp")
-        self.log.info(f"Escrito en DuckDB: {table_name} ({len(df):,} filas)")
+        self.db.write_dataframe(df, table_name)
+        self.log.info(f"Escrito en Bronze: {table_name} ({len(df):,} filas)")
 
     def ingest_leads(self) -> IngestionResult:
         """Ingesta completa de marketing_leads.csv → bronze.marketing_leads.

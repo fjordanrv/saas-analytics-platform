@@ -186,6 +186,108 @@ class DatabaseConnection:
             log.error(f"Error ejecutando query a DataFrame: {e}\nSQL: {query[:200]}")
             raise RuntimeError(f"Error en execute_df(): {e}") from e
 
+    def write_dataframe(self, df: pd.DataFrame, table_name: str) -> None:
+        """Escribe un DataFrame como tabla en el motor configurado.
+
+        Para DuckDB usa register() + CREATE OR REPLACE TABLE.
+        Para Databricks usa Parquet + Unity Catalog Volume + COPY INTO.
+
+        Args:
+            df:         DataFrame a escribir.
+            table_name: Nombre completo de la tabla (ej. 'bronze.customers').
+        """
+        if self.conn is None:
+            self.connect()
+
+        if self._db_type == "duckdb":
+            self._write_duckdb(df, table_name)
+        else:
+            self._write_databricks(df, table_name)
+
+    def _write_duckdb(self, df: pd.DataFrame, table_name: str) -> None:
+        """Escribe DataFrame en DuckDB via register() + CREATE OR REPLACE TABLE."""
+        try:
+            self.conn.register("_tmp_write", df)
+            self.conn.execute(f"CREATE OR REPLACE TABLE {table_name} AS SELECT * FROM _tmp_write")
+            log.info(f"Escrito en DuckDB: {table_name} ({len(df):,} filas)")
+        except Exception as e:
+            raise RuntimeError(f"Error escribiendo en DuckDB '{table_name}': {e}") from e
+
+    def _write_databricks(self, df: pd.DataFrame, table_name: str) -> None:
+        """Escribe DataFrame en Databricks via Parquet + Unity Catalog Volume + COPY INTO."""
+        import tempfile
+        import requests
+
+        host = os.getenv("DATABRICKS_HOST")
+        token = os.getenv("DATABRICKS_TOKEN")
+        catalog = os.getenv("DATABRICKS_CATALOG", "saas_platform")
+
+        # Extraer solo el nombre de tabla sin schema (ej. 'bronze.customers' → 'customers')
+        short_name = table_name.split(".")[-1]
+        volume_path = f"/Volumes/{catalog}/bronze/raw_files/{short_name}.parquet"
+
+        # 1. Guardar Parquet en archivo temporal
+        with tempfile.NamedTemporaryFile(suffix=".parquet", delete=False) as tmp:
+            local_path = tmp.name
+        df.to_parquet(local_path, index=False)
+        log.info(f"Parquet guardado temporalmente: {local_path}")
+
+        try:
+            # 2. Subir al Volume via REST API
+            with open(local_path, "rb") as f:
+                response = requests.put(
+                    f"https://{host}/api/2.0/fs/files{volume_path}",
+                    headers={
+                        "Authorization": f"Bearer {token}",
+                        "Content-Type": "application/octet-stream",
+                    },
+                    data=f,
+                )
+            response.raise_for_status()
+            log.info(f"Subido a Volume: {volume_path}")
+
+            # 3. Crear tabla Delta si no existe
+            cols = []
+            for col, dtype in zip(df.columns, df.dtypes):
+                dtype_str = str(dtype)
+                if "int" in dtype_str:
+                    sql_type = "BIGINT"
+                elif "float" in dtype_str:
+                    sql_type = "DOUBLE"
+                elif "bool" in dtype_str:
+                    sql_type = "BOOLEAN"
+                elif "datetime" in dtype_str:
+                    sql_type = "TIMESTAMP"
+                elif "date" in dtype_str:
+                    sql_type = "DATE"
+                else:
+                    sql_type = "STRING"
+                cols.append(f"`{col}` {sql_type}")
+
+            cursor = self.conn.cursor()
+            cursor.execute(f"""
+                CREATE TABLE IF NOT EXISTS {catalog}.{table_name}
+                ({", ".join(cols)})
+                USING DELTA
+            """)
+            cursor.execute(f"TRUNCATE TABLE {catalog}.{table_name}")
+
+            # 4. COPY INTO desde Volume
+            cursor.execute(f"""
+                COPY INTO {catalog}.{table_name}
+                FROM '{volume_path}'
+                FILEFORMAT = PARQUET
+                FORMAT_OPTIONS ('mergeSchema' = 'true')
+                COPY_OPTIONS ('mergeSchema' = 'true')
+            """)
+            cursor.close()
+            log.info(f"Escrito en Databricks: {catalog}.{table_name} ({len(df):,} filas)")
+
+        finally:
+            # 5. Limpiar archivo temporal local
+            import os as _os
+            _os.remove(local_path)
+
     def create_schema(self, schema_name: str) -> None:
         """Crea un schema en la base de datos si no existe.
 

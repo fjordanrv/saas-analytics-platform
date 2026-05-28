@@ -175,17 +175,15 @@ class CRMIngestion:
         return df
 
     def write_bronze(self, df: pd.DataFrame, table_name: str) -> None:
-        """Crea (o reemplaza) la tabla Bronze en DuckDB con el contenido del DataFrame.
+        """Escribe el DataFrame en la capa Bronze del motor configurado.
 
         Args:
             df:         DataFrame con metadata Bronze incluida.
             table_name: Nombre completo de la tabla (ej. 'bronze.customers').
         """
         self.db.create_schema("bronze")
-        # Registrar el DataFrame como vista temporal para referenciarlo en SQL
-        self.db.conn.register("_bronze_tmp", df)
-        self.db.execute(f"CREATE OR REPLACE TABLE {table_name} AS SELECT * FROM _bronze_tmp")
-        self.log.info(f"Escrito en DuckDB: {table_name} ({len(df):,} filas)")
+        self.db.write_dataframe(df, table_name)
+        self.log.info(f"Escrito en Bronze: {table_name} ({len(df):,} filas)")
 
     # ── Métodos de ingesta ────────────────────────────────────────────────────
 
