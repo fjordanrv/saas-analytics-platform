@@ -12,8 +12,11 @@ source "/home/fjordan/Documentos/Estudios/Sport Data Campus/ml-env/bin/activate"
 - **Python 3.12** — venv externo: `/home/fjordan/Documentos/Estudios/Sport Data Campus/ml-env`
 - **DuckDB 1.5.3** — base de datos local (reemplaza Databricks en dev)
 - **dbt-duckdb 1.9.4** — transformaciones Bronze → Silver → Gold
+- **dbt-databricks 1.12.0** — adaptador prod (target: prod en profiles.yml)
+- **Databricks** — catálogo `saas_platform`, warehouse `/sql/1.0/warehouses/934818a4940ad1ee`
 - **Airflow vía Astro CLI** — orquestación (`airflow/` gestionado por Astro)
 - **Docker** — Airflow corre en contenedor, runtime `astrocrpublic.azurecr.io/runtime:3.2-4`
+- **Plotly + Kaleido 1.3.0** — visualizaciones y export PNG en notebooks
 
 ## Comandos clave
 
@@ -35,14 +38,19 @@ python -m src.ingestion.cs_ingestion
 ### dbt (desde carpeta dbt/ con .env cargado)
 ```bash
 export $(grep -v '^#' ../.env | xargs)
-dbt debug
+dbt debug                          # dev (DuckDB)
+dbt debug --target prod            # prod (Databricks)
 dbt seed
 dbt run --select staging
 dbt run --select intermediate
 dbt run --select marts
 dbt test
-dbt docs generate && dbt docs serve
+dbt docs generate && dbt docs serve --port 8085
 ```
+
+> ⚠️ `dbt docs serve` abre una conexión DuckDB que bloquea escrituras.
+> Matar el proceso antes de ejecutar `dbt run` local:
+> `lsof data/cloudmetrics.duckdb | awk 'NR>1{print $2}' | xargs kill`
 
 ### Airflow (desde carpeta airflow/)
 ```bash
@@ -91,24 +99,24 @@ saas-analytics-platform/
 
 ## CONTEXTO DE CONTINUIDAD
 
-### Estado actual por capa (2026-05-27)
+### Estado actual por capa (2026-05-28)
 
 | Capa | Estado | Detalle |
 |------|--------|---------|
-| **Bronze** | ✅ Completo | 8 tablas, 79,342 filas, 100% quality score |
+| **Bronze** | ✅ Completo | 8 tablas, 79,842 filas, 100% quality score |
 | **Silver — Staging** | ✅ Completo | 8 views, 25 tests pasando |
 | **Silver — Intermediate** | ✅ Completo | 3 tables, 8 tests pasando |
-| **Gold — Marts** | ✅ Completo | 7 tables, 21 tests pasando |
-| **Airflow** | ✅ Configurado | Corriendo en `http://airflow.localhost:6563` |
-| **Pipeline end-to-end** | ⏳ Pendiente | DAG creado, falta ejecución completa verificada |
+| **Gold — Marts** | ✅ Completo | 7 tables, 21 tests pasando · 54 tests totales |
+| **Airflow** | ✅ Completo | Pipeline end-to-end verificado · `http://airflow.localhost:6563` |
+| **Notebooks** | ✅ Completo | 4 notebooks pre-ejecutados, 0 errores |
+| **Screenshots** | ✅ Completo | 7 PNGs en `docs/screenshots/` (no trackeados en git) |
+| **GitHub** | ✅ Publicado | github.com/fjordanrv/saas-analytics-platform |
+| **Databricks** | ✅ Conectado | `dbt debug --target prod` pasa · catálogo `saas_platform` con todos los schemas |
 
 ### Próximos pasos (en orden)
-1. Trigger manual del DAG `saas_analytics_full_pipeline` en la UI y verificar las 9 tareas
-2. Crear `src/quality/quality_report.py`
-3. Crear 4 notebooks Jupyter (`01_bronze`, `02_silver`, `03_gold`, `04_exploratory`)
-4. Escribir `README.md` profesional con diagrama de arquitectura
-5. Crear cuenta GitHub y hacer push del repositorio
-6. Crear cuenta Databricks y migrar (solo cambio de `.env`)
+1. `dbt run --target prod` — migrar modelos Silver+Gold a Databricks Delta Tables
+2. Paralelizar ingestas en DAG de Airflow (al migrar a Databricks se elimina la restricción de DuckDB)
+3. Post LinkedIn con carousel de screenshots del proyecto
 
 ### Decisiones de diseño tomadas (no revertir)
 - **`FROM bronze.tabla`** en staging — tablas Bronze las crea Python en DuckDB directamente; no usar `{{ source() }}`
@@ -117,6 +125,9 @@ saas-analytics-platform/
 - **Imports Airflow 3.x** — usar `airflow.providers.standard.operators.bash/empty`, no `airflow.operators.*` (deprecado en runtime 3.2)
 - **`dbt/.user.yml`** — auto-generado por dbt, en `.gitignore`, nunca commitear
 - **Staging lee Bronze por schema** — `bronze.customers`, `bronze.payments`, etc. El schema `bronze` lo crea Python en DuckDB
+- **`DATABRICKS_HOST` sin `https://`** — el adaptador dbt-databricks construye la URL internamente; con `https://` en el valor retorna 403. El conector Python sí acepta ambos (hace `.replace('https://', '')` internamente)
+- **Heatmaps Plotly/Kaleido** — usar colorscales con extremos brillantes (`#C62828`, `#00E676`), `xgap=2/ygap=2`, `zmin` dinámico, y colores explícitos en `update_layout` sin `template="plotly_dark"` para que el export PNG sea fiel al notebook
+- **DuckDB `duckdb_tables()`** — columna es `schema_name`, no `table_schema` (que es la convención SQL estándar/PostgreSQL)
 
 ### Convenciones acordadas
 - **SQL**: CTEs en `snake_case`, grain documentado en comentario al inicio del modelo

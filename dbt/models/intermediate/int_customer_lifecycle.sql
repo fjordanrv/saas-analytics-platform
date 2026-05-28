@@ -27,8 +27,8 @@ customer_enriched as (
         co.industry,
         co.employee_count,
         co.account_manager,
-        datediff('day', c.signup_date, current_date)   as customer_age_days,
-        datediff('month', c.signup_date, current_date) as customer_age_months,
+        {{ compat_datediff('day', 'c.signup_date', 'current_date') }}   as customer_age_days,
+        {{ compat_datediff('month', 'c.signup_date', 'current_date') }} as customer_age_months,
         case c.plan
             when 'Starter'    then 1
             when 'Pro'        then 2
@@ -41,7 +41,7 @@ customer_enriched as (
              then true else false end                  as is_active,
         case
             when c.churn_date is not null
-            then datediff('day', c.signup_date, c.churn_date)
+            then {{ compat_datediff('day', 'c.signup_date', 'c.churn_date') }}
             else null
         end                                            as days_to_churn,
         s.sub_id,

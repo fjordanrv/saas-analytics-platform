@@ -11,6 +11,6 @@ saas_analytics:
       host: "{{ env_var('DATABRICKS_HOST', '') }}"
       http_path: "{{ env_var('DATABRICKS_HTTP_PATH', '') }}"
       token: "{{ env_var('DATABRICKS_TOKEN', '') }}"
-      catalog: "{{ env_var('DATABRICKS_CATALOG', 'main') }}"
-      schema: analytics
-      threads: 8
+      catalog: "{{ env_var('DATABRICKS_CATALOG', 'saas_platform') }}"
+      schema: "{{ env_var('DATABRICKS_SCHEMA', 'staging') }}"
+      threads: 4

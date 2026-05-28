@@ -30,8 +30,7 @@ subscription_metrics as (
         s.end_date,
         s.previous_plan,
         s.change_reason,
-        datediff('month', s.start_date,
-            coalesce(s.end_date, current_date))        as subscription_months,
+        {{ compat_datediff('month', 's.start_date', 'coalesce(s.end_date, current_date)') }} as subscription_months,
         case
             when s.previous_plan is null then 'new'
             when s.change_reason = 'upgrade' then 'expansion'

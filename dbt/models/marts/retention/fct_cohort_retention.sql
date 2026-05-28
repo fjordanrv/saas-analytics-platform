@@ -27,7 +27,7 @@ retention_data as (
             case
                 when c.status = 'active'
                   or (c.churn_date is not null
-                      and datediff('month', c.signup_date, c.churn_date)
+                      and {{ compat_datediff('month', 'c.signup_date', 'c.churn_date') }}
                           > months_series.months_since_signup)
                 then c.customer_id
             end
@@ -35,7 +35,11 @@ retention_data as (
     from customers c
     join cohort_size cs using (cohort_month)
     cross join (
+        {% if target.type == 'databricks' %}
+        select explode(sequence(0, 12)) as months_since_signup
+        {% else %}
         select unnest(range(0, 13)) as months_since_signup
+        {% endif %}
     ) months_series
     group by c.cohort_month, cs.cohort_size,
              months_series.months_since_signup
