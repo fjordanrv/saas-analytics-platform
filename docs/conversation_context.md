@@ -100,7 +100,7 @@ Claude Code    → ejecución, creación de archivos
 NotebookLM     → infografías y diseño visual
 Auto mode      → solo para tareas con múltiples archivos
 
-## Estado del proyecto al cerrar esta sesión
+## Estado del proyecto al cerrar esta sesión (2026-05-28)
 
 ### Completado
 - Bronze: 8 tablas, 79,342 filas, 100% quality score
@@ -112,6 +112,11 @@ Auto mode      → solo para tareas con múltiples archivos
 - dag_full_pipeline.py con 11 tareas
 - Volumen Docker montado correctamente
 - logger.py detecta Docker vs local automáticamente
+- 4 notebooks Jupyter pre-ejecutados (01, 02, 03, 04)
+- README.md profesional con badges, Mermaid diagram, KPI table
+- Repositorio público en github.com/fjordanrv/saas-analytics-platform
+- 12 commits limpios en main
+- docs/screenshots/ ignorada en .gitignore
 
 NOTA IMPORTANTE — DuckDB limitación de concurrencia:
 DuckDB solo permite una conexión simultánea.
@@ -119,15 +124,16 @@ En Airflow las ingestas corren en SECUENCIA no en paralelo.
 Cuando migremos a Databricks se pueden volver a paralelizar
 porque Databricks maneja múltiples conexiones simultáneas.
 
+NOTA — GitHub sin gh CLI:
+gh no está instalado. Se usó curl + API REST de GitHub para crear el repo.
+Las credenciales están en ~/.git-credentials (token PAT ya configurado).
+Para futuros pushes: git push funciona directamente.
+
 ### Pendiente al retomar
-1. Verificar que el DAG corre completo sin errores en Airflow
-2. Capturar screenshots de Airflow UI para LinkedIn
-3. 4 notebooks Jupyter con análisis exploratorio
-4. README.md profesional con diagramas Mermaid
-5. Crear cuenta GitHub y hacer push
-6. Crear cuenta Databricks Community Edition
-7. Migrar de DuckDB a Databricks (solo cambiar .env)
-8. Dashboards en Figma/Canva con los KPIs
+1. dbt docs — generar y tomar capturas (lineage graph, tests, fct_mrr)
+2. Notebooks — tomar capturas (cohort heatmap, MRR waterfall, CAC vs LTV)
+3. Databricks Community Edition — crear cuenta y migrar pipeline
+4. Post LinkedIn — carousel con capturas del proyecto
 
 ### Errores resueltos en Airflow (2026-05-27)
 - PermissionError logs/ → chmod 777 + detección Docker en logger.py

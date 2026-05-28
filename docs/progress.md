@@ -1,7 +1,7 @@
 # Progress — SaaS Analytics Platform
-Última actualización: 2026-05-27
+Última actualización: 2026-05-28
 
-## Estado actual: Pipeline completo funcionando en Airflow
+## Estado actual: Pipeline completo + notebooks + GitHub publicado
 
 ## Completado ✅
 
@@ -57,6 +57,16 @@
 - 4 commits limpios en rama main
 - Sin datos sensibles ni archivos de entorno
 
+### GitHub
+- Repositorio público en github.com/fjordanrv/saas-analytics-platform
+- 12 commits limpios en main
+- README con badges, Mermaid diagram, KPI table
+- 4 notebooks pre-ejecutados subidos
+
+### Screenshots
+- Carpeta docs/screenshots/ creada
+- Ignorada en .gitignore
+
 ### Notebooks Jupyter
 - 01_bronze_ingestion.ipynb — ✅ completo y pre-ejecutado
 - 02_silver_transformation.ipynb — ✅ completo y pre-ejecutado (2026-05-28)
@@ -76,27 +86,34 @@
 ## Pendiente ⬜
 
 ### Próxima sesión (empezar aquí)
-1. README.md profesional
-   - Badges de tecnologías
-   - Diagrama arquitectura Mermaid
-   - Tabla de KPIs
-   - Quickstart en 3 comandos
-   - Screenshots del proyecto
+1. dbt docs — generar y tomar capturas:
+   cd dbt && dbt docs generate && dbt docs serve
+   Capturar en http://localhost:8080:
+   - Lineage Graph completo → dbt_lineage_graph.png
+   - fct_mrr model abierto → dbt_fct_mrr_model.png
+   - 54 tests en verde → dbt_tests_passing.png
+   Guardar en docs/screenshots/
 
-3. GitHub
-   - Crear cuenta
-   - git remote add origin
-   - git push
+2. Notebooks — tomar capturas:
+   - 03_gold_kpis: cohort heatmap → notebook_03_cohort_heatmap.png
+   - 03_gold_kpis: MRR waterfall → notebook_03_mrr_waterfall.png
+   - 02_silver: dbt run output → notebook_02_dbt_run.png
+   - 04_exploratory: scatter CAC vs LTV → notebook_04_cac_ltv.png
 
-4. Databricks Community Edition
-   - Crear cuenta
+3. Databricks Community Edition:
+   - Crear cuenta en databricks.com/try
+   - Obtener DATABRICKS_HOST y DATABRICKS_TOKEN
    - Actualizar .env: DB_TYPE=databricks
-   - Actualizar profiles.yml target: prod
+   - Actualizar dbt/profiles.yml target: prod
    - Migrar tablas Bronze a Delta Tables
+   - Re-ejecutar dbt pipeline en Databricks
+   - Volver a paralelizar ingestas en Airflow DAG
+   - Tomar captura Airflow en paralelo y en verde
 
-5. Dashboards
-   - Figma/Canva con KPIs de Gold layer
-   - Screenshots para LinkedIn
+4. Post LinkedIn:
+   - Imagen principal: cohort heatmap notebook 03
+   - Carousel con todas las capturas
+   - Descripción del proyecto y stack
 
 ## Lecciones aprendidas importantes
 
