@@ -36,3 +36,4 @@ airflow/airflow.db
 .idea/
 *.swp
 dbt/.user.yml
+docs/screenshots/
