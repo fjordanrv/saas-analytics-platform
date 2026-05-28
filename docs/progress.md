@@ -57,16 +57,26 @@
 - 4 commits limpios en rama main
 - Sin datos sensibles ni archivos de entorno
 
+### Notebooks Jupyter
+- 01_bronze_ingestion.ipynb — ✅ completo y pre-ejecutado
+- 02_silver_transformation.ipynb — ✅ completo y pre-ejecutado (2026-05-28)
+  - 33 celdas, 0 errores, dbt run staging PASS=8, intermediate PASS=3, 33 tests
+- 03_gold_kpis.ipynb — ✅ completo y pre-ejecutado (2026-05-28)
+  - 33 celdas, 0 errores, 18 charts HTML, 5 MB
+  - dbt run marts: PASS=7, dbt test: 21/21 passing
+  - KPIs reales: MRR $25,551 · ARR $306,612 · Cohort M12 avg 91.5% · Activation 67%
+  - build_notebook_03.py usa patrón .replace() para setup (no f-string escaping)
+- 04_exploratory_analysis.ipynb — ✅ completo y pre-ejecutado (2026-05-28)
+  - 28 celdas, 0 errores, 7 charts HTML, ~5 MB
+  - 5 business questions: Channel LTV/CAC, Churn Timing, Feature Adoption, NPS, Cohort Quality
+  - Sección Airflow con ASCII DAG + pipeline metrics table
+  - Key Takeaways por equipo (Growth, CS, Product, Finance)
+  - build_notebook_04.py con columnas verificadas contra schema real
+
 ## Pendiente ⬜
 
 ### Próxima sesión (empezar aquí)
-1. 4 notebooks Jupyter con análisis exploratorio
-   - 01_bronze_ingestion.ipynb
-   - 02_silver_transformation.ipynb
-   - 03_gold_kpis.ipynb
-   - 04_exploratory_analysis.ipynb
-
-2. README.md profesional
+1. README.md profesional
    - Badges de tecnologías
    - Diagrama arquitectura Mermaid
    - Tabla de KPIs
