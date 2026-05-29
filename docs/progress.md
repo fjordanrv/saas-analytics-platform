@@ -1,137 +1,110 @@
 # Progress — SaaS Analytics Platform
-Última actualización: 2026-05-28
+Última actualización: 2026-05-29
 
-## Estado actual: Pipeline completo · Databricks conectado · Portfolio publicado
+## Estado actual: Pipeline completo end-to-end en Databricks prod ✅
 
 ---
 
 ## Completado ✅
 
 ### Infraestructura
-- Estructura de carpetas del proyecto
-- Entorno virtual ml-env configurado (Python 3.12)
-- Docker y Astro CLI instalados
-- .env, .gitignore, requirements.txt
-- CLAUDE.md con contexto del proyecto
-- docs/ con arquitectura, KPIs y fuentes de datos
-- kaleido 1.3.0 instalado en ml-env (export PNG de Plotly)
+- Estructura de carpetas, ml-env (Python 3.12), Docker, Astro CLI
+- .env, .gitignore, requirements.txt, CLAUDE.md, docs/
+- kaleido 1.3.0 en ml-env (export PNG Plotly)
 
 ### Datos Mock
-- generate_mock_data.py con Faker
-- 8 archivos en data/raw/
-- 79,842 filas en Bronze (distribuciones reales de SaaS B2B)
+- generate_mock_data.py con Faker · 8 archivos en data/raw/ · 79,842 filas Bronze
 
 ### Bronze Layer (Python)
-- src/utils/logger.py — logging centralizado Loguru (detecta Docker vs local)
-- src/utils/database.py — Singleton DuckDB/Databricks
-- src/quality/data_quality_checks.py — 5 checks, 100% quality score
-- src/ingestion/crm_ingestion.py
-- src/ingestion/billing_ingestion.py
-- src/ingestion/product_events_ingestion.py
-- src/ingestion/marketing_ingestion.py
-- src/ingestion/cs_ingestion.py
-- 8 tablas en DuckDB bronze.*
+- src/utils/logger.py, database.py (Singleton DuckDB/Databricks), data_quality_checks.py
+- 5 scripts de ingesta (crm, billing, product_events, marketing, cs)
+- `write_dataframe()` en DatabaseConnection — despacha a DuckDB o Databricks según DB_TYPE
+- 8 tablas Bronze en DuckDB (dev) y Databricks Delta Tables (prod)
 
 ### Silver Layer (dbt)
-- 8 modelos staging (vistas) — 25 tests
-- 3 modelos intermediate (tablas) — 8 tests
-- dbt_project.yml, profiles.yml, packages.yml
-- profiles.yml usa env_var() para DuckDB (dev) / Databricks (prod)
+- 8 modelos staging (vistas) · 3 modelos intermediate (tablas) · 25+8 tests
+- profiles.yml: dev=DuckDB / prod=Databricks via env_var()
+- `compat_datediff` macro: compatibilidad DuckDB↔Databricks
 - seeds/dim_plans.csv
 
 ### Gold Layer (dbt marts)
 - marts/finance: fct_mrr, fct_revenue_expansion
 - marts/growth: fct_customer_acquisition, fct_activation_funnel
 - marts/retention: fct_churn, fct_cohort_retention, fct_ltv
-- 21 tests Gold — 54 dbt tests totales pasando
+- 21 tests Gold · 54 dbt tests totales pasando en dev Y prod
 
 ### Airflow
-- Astro CLI con Docker funcionando
-- dag_full_pipeline.py — 11 tareas
-- Ingestas en SECUENCIA (DuckDB no soporta paralelo)
-- dbt en secuencia: staging → intermediate → marts → test
-- docker-compose.override.yml con volumen montado
-- Pipeline corriendo exitosamente end-to-end
-- UI: http://airflow.localhost:6563
+- Astro CLI + Docker · dag_full_pipeline.py · UI: http://airflow.localhost:6563
+- **5 ingestas en PARALELO** (Databricks soporta múltiples conexiones)
+- dbt en secuencia: staging → intermediate → marts → test (todos --target prod)
+- docker-compose.override.yml: env vars Databricks + AIRFLOW_HOME override
 
-### Notebooks Jupyter (4 — todos pre-ejecutados, 0 errores)
-- **01_bronze_ingestion.ipynb** — ingesta completa, quality checks, ~5.2 MB
-- **02_silver_transformation.ipynb** — dbt staging PASS=8, intermediate PASS=3, 33 tests, 3 charts
-- **03_gold_kpis.ipynb** — dbt marts PASS=7, 21 tests, 12 charts KPIs Gold
-  - MRR $25,551 · ARR $306,612 · Cohort M12 avg 91.5% · Activation 63.9%
-  - Heatmap colorscale corregida (extremos brillantes para Kaleido export)
-- **04_exploratory_analysis.ipynb** — 5 business questions, 7 charts, Key Takeaways por equipo
+### Notebooks Jupyter (4 pre-ejecutados, 0 errores)
+- 01_bronze_ingestion.ipynb, 02_silver_transformation.ipynb
+- 03_gold_kpis.ipynb — MRR $25,551 · ARR $306,612 · Cohort M12 91.5% · Activation 63.9%
+- 04_exploratory_analysis.ipynb — 5 business questions, Key Takeaways por equipo
 
-### Screenshots exportadas (docs/screenshots/ — no trackeadas en git)
-- dbt_lineage_graph.png — lineage graph completo del pipeline
-- dbt_fct_mrr_model.png — modelo fct_mrr en dbt docs
-- dbt_tests_passing.png — 54 tests en verde
-- notebook_03_mrr_waterfall.png — MRR waterfall con 5 movimientos
-- notebook_03_cohort_heatmap.png — cohort retention heatmap (colorscale corregida)
-- notebook_02_dbt_run.png — output dbt run Silver layer
-- notebook_04_cac_ltv.png — scatter CAC vs LTV por canal
+### Screenshots (docs/screenshots/ — no trackeadas en git)
+- dbt_lineage_graph.png · dbt_fct_mrr_model.png · dbt_tests_passing.png
+- notebook_03_mrr_waterfall.png · notebook_03_cohort_heatmap.png
+- notebook_02_dbt_run.png · notebook_04_cac_ltv.png
+- airflow_parallel_green.png (captura pipeline paralelo en verde)
 
 ### GitHub
-- Repositorio público: github.com/fjordanrv/saas-analytics-platform
-- README profesional con badges, diagrama Mermaid, tabla KPIs
-- 4 notebooks pre-ejecutados subidos
+- github.com/fjordanrv/saas-analytics-platform · 15 commits en main
+- README profesional con badges, diagrama Mermaid, tabla KPIs · 4 notebooks subidos
 
-### Databricks
-- Cuenta conectada: dbc-6f3f61b1-f9c3.cloud.databricks.com
-- `dbt debug --target prod` → All checks passed ✅
-- Catálogo `saas_platform` verificado con schemas: staging, intermediate, finance, growth, retention, seeds
-- Fix aplicado: `DATABRICKS_HOST` sin prefijo `https://` en .env
+### Databricks (2026-05-29 — COMPLETADO)
+- Cuenta: dbc-6f3f61b1-f9c3.cloud.databricks.com (Free Edition)
+- Catálogo `saas_platform`: schemas bronze, staging, intermediate, finance, growth, retention, seeds
+- Unity Catalog Volume: `saas_platform.bronze.raw_files`
+- 79,842 filas migradas como Delta Tables vía Parquet + Volume + COPY INTO
+- `dbt run --target prod` → 18/18 modelos PASS
+- `dbt test --target prod` → 54/54 tests PASS
+- Pipeline ingesta Databricks: 8/8 tablas, 100% quality score, ~6s/tabla
 
 ---
 
 ## Pendiente ⬜
 
-### Siguiente paso prioritario
-1. **`dbt run --target prod`** — migrar modelos Silver+Gold a Databricks Delta Tables
-   ```bash
-   cd dbt && export $(grep -v '^#' ../.env | xargs)
-   dbt run --target prod --select staging
-   dbt run --target prod --select intermediate
-   dbt run --target prod --select marts
-   dbt test --target prod
-   ```
+### Próxima sesión (empezar aquí)
+1. **Tableau Public** — conectar tablas Gold de Databricks y construir dashboard
+   - Conectar a `saas_platform.finance.fct_mrr`, `fct_revenue_expansion`
+   - Conectar a `saas_platform.retention.fct_cohort_retention`, `fct_churn`, `fct_ltv`
+   - Conectar a `saas_platform.growth.fct_customer_acquisition`, `fct_activation_funnel`
+2. **Post LinkedIn** — carousel con capturas del proyecto
+   - Imagen principal: airflow_parallel_green.png
+   - Slides: cohort heatmap, MRR waterfall, dbt lineage, KPI dashboard
 
-2. **Paralelizar ingestas en Airflow** — al migrar a Databricks desaparece la restricción
-   de escritura única de DuckDB; cambiar `trigger_rule` en el DAG
-
-3. **Post LinkedIn** — carousel con screenshots del proyecto
-   - Imagen principal: cohort heatmap (notebook_03_cohort_heatmap.png)
-   - Slides: MRR waterfall, dbt lineage, KPI dashboard, pipeline Airflow
+### Stack final confirmado
+```
+Faker → Bronze (Python) → Silver (dbt) → Gold (dbt) → Databricks Delta Tables → Tableau Public
+                                                               ↑
+                                                       Airflow (5 ingestas paralelas)
+```
 
 ---
 
-## Lecciones aprendidas importantes
+## Lecciones aprendidas
 
-### DuckDB — concurrencia y lock
-- Solo permite UNA conexión con permisos de escritura simultánea
-- `dbt docs serve` abre una conexión y bloquea `dbt run` → matar el proceso antes:
-  `lsof data/cloudmetrics.duckdb | awk 'NR>1{print $2}' | xargs kill`
-- En notebooks: `run_dbt()` cierra y reabre la conexión DuckDB antes/después de cada subprocess dbt
-- `duckdb_tables()` usa `schema_name` (no `table_schema` como en PostgreSQL/SQL estándar)
+### DuckDB
+- Una sola conexión escritura · `dbt docs serve` bloquea `dbt run` → matar proceso antes
+- `duckdb_tables()` usa `schema_name` (no `table_schema`)
 
-### Docker permisos
-- El contenedor Docker necesita permisos de escritura en carpetas montadas como volumen:
-  `chmod -R 777 data/ dbt/ logs/`
+### Databricks — fixes críticos
+- `DATABRICKS_HOST` sin `https://` — dbt-databricks lo añade internamente; con https → 403
+- DBFS root bloqueado en Free Edition → usar Unity Catalog Volumes (`/api/2.0/fs/files`)
+- `databricks-sql-connector==4.1.5` (no 3.7.0) — requerido por dbt-databricks==1.12.0
+- dbt-core en airflow/requirements.txt: 1.11.8 (compatible con dbt-databricks); no incluir dbt-duckdb
 
-### dbt con variables de entorno
-- Siempre cargar .env antes de correr dbt local:
-  `export $(grep -v '^#' ../.env | xargs)`
-- profiles.yml usa `env_var()` — sin las vars exportadas dbt usa el fallback Docker
+### dbt DuckDB→Databricks compatibilidad
+- `datediff('day', ...)` → usar macro `compat_datediff` (quoted en DuckDB, unquoted en Databricks)
+- `unnest(range(0,13))` → `{% if target.type == 'databricks' %} explode(sequence(0,12))`
 
-### Databricks — DATABRICKS_HOST
-- El adaptador dbt-databricks espera el hostname SIN `https://`
-- El conector Python (`databricks-sql-connector`) acepta ambos formatos
-- Con `https://` en dbt → HTTP 403 "Invalid access token" (URL malformada internamente)
+### Airflow + Docker
+- `docker-compose.override.yml`: `environment:` tiene precedencia sobre `env_file:` — usar para AIRFLOW_HOME, BASE_LOG_FOLDER, DAGS_FOLDER con paths del contenedor
+- `airflow/requirements.txt` separado del requirements.txt raíz — nunca mezclar
 
-### Plotly/Kaleido — export PNG fiel al notebook
-- `template="plotly_dark"` no es confiable en Kaleido 1.x headless — setear todos los
-  colores explícitamente en `update_layout` (`paper_bgcolor`, `plot_bgcolor`, `gridcolor`)
-- Colorscales de heatmaps: usar extremos brillantes (`#C62828` rojo, `#00E676` verde neón)
-  — los oscuros (`#8B0000`, `#006400`) se funden con el fondo `#0F1929` en PNG export
-- `xgap=2, ygap=2` en `go.Heatmap` — bordes visibles entre celdas en render estático
-- `zmin` basado en datos reales (`df.min() - 2`), no en benchmark arbitrario (ej: 60)
+### Plotly/Kaleido export PNG
+- `template="plotly_dark"` no fiable en headless → setear colores explícitamente en `update_layout`
+- Colorscales: extremos brillantes (`#C62828`, `#00E676`) · `xgap=2, ygap=2` · `zmin` dinámico
