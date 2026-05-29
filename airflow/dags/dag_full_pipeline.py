@@ -24,7 +24,7 @@ default_args = {
 with DAG(
     dag_id="saas_analytics_full_pipeline",
     default_args=default_args,
-    description="Pipeline completo CloudMetrics: Bronze → Silver → Gold",
+    description="Pipeline completo CloudMetrics: Bronze → Silver → Gold (Databricks prod)",
     schedule="0 6 * * *",
     start_date=datetime(2024, 1, 1),
     catchup=False,
@@ -34,7 +34,7 @@ with DAG(
     ## SaaS Analytics Full Pipeline — CloudMetrics Inc.
 
     ### Arquitectura Medallion
-    - **Bronze**: Python ingesta desde data/raw/ a DuckDB
+    - **Bronze**: Python ingesta desde data/raw/ a Databricks Delta Tables (paralelo)
     - **Silver**: dbt staging + intermediate
     - **Gold**: dbt marts con KPIs finales
 
@@ -74,28 +74,28 @@ with DAG(
 
     dbt_staging = BashOperator(
         task_id="dbt_run_staging",
-        bash_command=f"cd {DBT_DIR} && dbt run --select staging --profiles-dir .",
+        bash_command=f"cd {DBT_DIR} && dbt run --select staging --target prod --profiles-dir .",
     )
 
     dbt_intermediate = BashOperator(
         task_id="dbt_run_intermediate",
-        bash_command=f"cd {DBT_DIR} && dbt run --select intermediate --profiles-dir .",
+        bash_command=f"cd {DBT_DIR} && dbt run --select intermediate --target prod --profiles-dir .",
     )
 
     dbt_marts = BashOperator(
         task_id="dbt_run_marts",
-        bash_command=f"cd {DBT_DIR} && dbt run --select marts --profiles-dir .",
+        bash_command=f"cd {DBT_DIR} && dbt run --select marts --target prod --profiles-dir .",
     )
 
     dbt_test = BashOperator(
         task_id="dbt_test",
-        bash_command=f"cd {DBT_DIR} && dbt test --profiles-dir .",
+        bash_command=f"cd {DBT_DIR} && dbt test --target prod --profiles-dir .",
     )
 
     pipeline_success = EmptyOperator(task_id="pipeline_success")
 
-    # Dependencias — ingestas en SECUENCIA por limitación de DuckDB (una sola conexión)
-    start >> ingest_crm >> ingest_billing >> ingest_events >> ingest_marketing >> ingest_cs >> dbt_staging
+    # Dependencias — ingestas en PARALELO (Databricks soporta múltiples conexiones simultáneas)
+    start >> [ingest_crm, ingest_billing, ingest_events, ingest_marketing, ingest_cs] >> dbt_staging
 
     dbt_staging >> dbt_intermediate
     dbt_intermediate >> dbt_marts

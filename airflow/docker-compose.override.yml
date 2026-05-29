@@ -1,10 +1,28 @@
 services:
   scheduler:
+    environment:
+      AIRFLOW_HOME: /usr/local/airflow
+      AIRFLOW__LOGGING__BASE_LOG_FOLDER: /usr/local/airflow/logs
+      AIRFLOW__CORE__DAGS_FOLDER: /usr/local/airflow/dags
     volumes:
       - /home/fjordan/Documentos/Proyectos/Personales/proyectos-principales/saas-analytics-platform:/usr/local/airflow/project
+    env_file:
+      - /home/fjordan/Documentos/Proyectos/Personales/proyectos-principales/saas-analytics-platform/.env
   dag-processor:
+    environment:
+      AIRFLOW_HOME: /usr/local/airflow
+      AIRFLOW__LOGGING__BASE_LOG_FOLDER: /usr/local/airflow/logs
+      AIRFLOW__CORE__DAGS_FOLDER: /usr/local/airflow/dags
     volumes:
       - /home/fjordan/Documentos/Proyectos/Personales/proyectos-principales/saas-analytics-platform:/usr/local/airflow/project
+    env_file:
+      - /home/fjordan/Documentos/Proyectos/Personales/proyectos-principales/saas-analytics-platform/.env
   triggerer:
+    environment:
+      AIRFLOW_HOME: /usr/local/airflow
+      AIRFLOW__LOGGING__BASE_LOG_FOLDER: /usr/local/airflow/logs
+      AIRFLOW__CORE__DAGS_FOLDER: /usr/local/airflow/dags
     volumes:
       - /home/fjordan/Documentos/Proyectos/Personales/proyectos-principales/saas-analytics-platform:/usr/local/airflow/project
+    env_file:
+      - /home/fjordan/Documentos/Proyectos/Personales/proyectos-principales/saas-analytics-platform/.env
