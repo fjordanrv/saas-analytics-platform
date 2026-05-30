@@ -1,0 +1,656 @@
+<?xml version='1.0' encoding='utf-8' ?>
+
+<!-- build 20261.26.0512.1636                               -->
+<workbook original-version='18.1' source-build='2026.1.2 (20261.26.0512.1636)' source-platform='win' version='18.1' xmlns:user='http://www.tableausoftware.com/xml/user'>
+  <document-format-change-manifest>
+    <AnimationOnByDefault />
+    <DatabricksCatalog />
+    <MarkAnimation />
+    <ObjectModelEncapsulateLegacy />
+    <ObjectModelTableType />
+    <SchemaViewerObjectModel />
+    <SheetIdentifierTracking />
+    <WindowsPersistSimpleIdentifiers />
+  </document-format-change-manifest>
+  <preferences>
+    <preference name='ui.encoding.shelf.height' value='24' />
+    <preference name='ui.shelf.height' value='26' />
+  </preferences>
+  <datasources>
+    <datasource caption='fct_mrr (saas_platform.finance.fct_mrr) (finance)' inline='true' name='federated.10kbhh91ppztqy1ckdj5q16jhg6e' version='18.1'>
+      <connection class='federated'>
+        <named-connections>
+          <named-connection caption='dbc-6f3f61b1-f9c3.cloud.databricks.com' name='databricks.0tclofn0rqc3yx188yjms17gw5oo'>
+            <connection authentication='auth-pass' authentication-type='' class='databricks' dbname='saas_platform' odbc-connect-string-extras='' one-time-sql='' schema='finance' server='dbc-6f3f61b1-f9c3.cloud.databricks.com' username='' v-auth-scope='' v-http-path='/sql/1.0/warehouses/934818a4940ad1ee' v-oidc-discovery-endpoint='' v-query-tags=''>
+              <connection-customization class='databricks' enabled='false' version='18.1'>
+                <vendor name='databricks' />
+                <driver name='databricks' />
+                <customizations>
+                  <customization name='CAP_AUTH_DB_IMPERSONATE' value='no' />
+                  <customization name='CAP_AUTH_KERBEROS_IMPERSONATE' value='yes' />
+                  <customization name='CAP_COLLECT_TABLE_STATISTICS' value='no' />
+                  <customization name='CAP_CONNECT_STORED_PROCEDURE' value='no' />
+                  <customization name='CAP_CREATE_TEMP_TABLES' value='no' />
+                  <customization name='CAP_DATASERVER_MAGIC_NUMBER' value='no' />
+                  <customization name='CAP_DEFERS_CONNECTION_VERIFICATION' value='no' />
+                  <customization name='CAP_DISABLE_EXTRACT_TABLE_INDEXING' value='no' />
+                  <customization name='CAP_EQUALITY_JOINS_ONLY' value='no' />
+                  <customization name='CAP_EQUIJOINS_ONLY' value='no' />
+                  <customization name='CAP_FAST_METADATA' value='no' />
+                  <customization name='CAP_FORCE_COUNT_FOR_NUMBEROFRECORDS' value='no' />
+                  <customization name='CAP_GREENPLUM_TRUST_METADATA_CONTAINSNULL' value='no' />
+                  <customization name='CAP_HIVE_FIX_METADATA_NAMES' value='no' />
+                  <customization name='CAP_INCLUDE_OTHER_CATALOG_NAME' value='no' />
+                  <customization name='CAP_INDEX_TEMP_TABLES' value='no' />
+                  <customization name='CAP_INSERT_TEMP_EXEC_STORED_PROCEDURE' value='no' />
+                  <customization name='CAP_JDBC_QUERY_USE_PREPARE_PARAMETER_MARKER' value='no' />
+                  <customization name='CAP_LOCAL_ALIASES_CASE_INSENSITIVE' value='no' />
+                  <customization name='CAP_METADATA_SHOW_OTHER_CATALOGS' value='no' />
+                  <customization name='CAP_OAUTH_FEDERATE_ACCCESS_TOKEN' value='no' />
+                  <customization name='CAP_OAUTH_FEDERATE_ID_TOKEN' value='no' />
+                  <customization name='CAP_OAUTH_VALIDATE_ALWAYS' value='no' />
+                  <customization name='CAP_ODBC_ALWAYS_THROW_CONNECT_ERRORS' value='no' />
+                  <customization name='CAP_ODBC_BIND_FORCE_DATETIME_AS_CHAR' value='no' />
+                  <customization name='CAP_ODBC_BIND_FORCE_DATE_AS_CHAR' value='no' />
+                  <customization name='CAP_ODBC_BIND_FORCE_MAX_STRING_BUFFERS' value='no' />
+                  <customization name='CAP_ODBC_BIND_FORCE_MEDIUM_STRING_BUFFERS' value='no' />
+                  <customization name='CAP_ODBC_BIND_FORCE_SIGNED' value='no' />
+                  <customization name='CAP_ODBC_BIND_FORCE_SMALL_STRING_BUFFERS' value='no' />
+                  <customization name='CAP_ODBC_BIND_SUPPRESS_INT64' value='no' />
+                  <customization name='CAP_ODBC_BIND_SUPPRESS_PREFERRED_TYPES' value='no' />
+                  <customization name='CAP_ODBC_BIND_SUPPRESS_WIDE_CHAR' value='no' />
+                  <customization name='CAP_ODBC_CURSOR_DYNAMIC' value='no' />
+                  <customization name='CAP_ODBC_CURSOR_FORWARD_ONLY' value='yes' />
+                  <customization name='CAP_ODBC_CURSOR_KEYSET_DRIVEN' value='no' />
+                  <customization name='CAP_ODBC_CURSOR_STATIC' value='no' />
+                  <customization name='CAP_ODBC_DRIVER_HIVE_ASSUME_LATEST' value='no' />
+                  <customization name='CAP_ODBC_ERROR_IGNORE_FALSE_ALARM' value='no' />
+                  <customization name='CAP_ODBC_FETCH_BUFFERS_RESIZABLE' value='no' />
+                  <customization name='CAP_ODBC_FETCH_BUFFERS_SIZE_MASSIVE' value='no' />
+                  <customization name='CAP_ODBC_FETCH_CONTINUE_ON_ERROR' value='no' />
+                  <customization name='CAP_ODBC_FETCH_FORCE_VERIFY_TRUNCATE_BY_CELLSTATUS' value='no' />
+                  <customization name='CAP_ODBC_FETCH_INT_TRUNCATION_AS_ERROR' value='yes' />
+                  <customization name='CAP_ODBC_FORCE_SINGLE_ROW_BINDING' value='no' />
+                  <customization name='CAP_ODBC_IMPORT_GETDATA_BUFFER_LARGE' value='no' />
+                  <customization name='CAP_ODBC_METADATA_STRING_LENGTH_UNKNOWN' value='no' />
+                  <customization name='CAP_ODBC_METADATA_SUPPRESS_SQLCOLUMNS_API' value='no' />
+                  <customization name='CAP_ODBC_METADATA_SUPPRESS_SQLFOREIGNKEYS_API' value='no' />
+                  <customization name='CAP_ODBC_METADATA_SUPPRESS_SQLPRIMARYKEYS_API' value='no' />
+                  <customization name='CAP_ODBC_METADATA_SUPPRESS_SQLSTATISTICS_API' value='yes' />
+                  <customization name='CAP_ODBC_QUERY_USE_PREPARE_PARAMETER_MARKER' value='no' />
+                  <customization name='CAP_ODBC_REBIND_SKIP_UNBIND' value='no' />
+                  <customization name='CAP_ODBC_SCHEMAS_OPTIONAL' value='no' />
+                  <customization name='CAP_ODBC_TRIM_VARCHAR_PADDING' value='no' />
+                  <customization name='CAP_ODBC_UNBIND_AUTO' value='no' />
+                  <customization name='CAP_ODBC_UNBIND_BATCH' value='no' />
+                  <customization name='CAP_ODBC_UNBIND_EACH' value='yes' />
+                  <customization name='CAP_ODBC_USE_NATIVE_PROTOCOL' value='yes' />
+                  <customization name='CAP_PADDED_SEMANTICS_NCHAR_NVARCHAR' value='no' />
+                  <customization name='CAP_PERSIST_SQL_RELATION_ON_LEAF_CONNECTION' value='no' />
+                  <customization name='CAP_QUERY_ALLOW_JOIN_REORDER' value='yes' />
+                  <customization name='CAP_QUERY_ALLOW_PARTIAL_AGGREGATION' value='yes' />
+                  <customization name='CAP_QUERY_ALWAYS_USE_AQ_CACHE' value='no' />
+                  <customization name='CAP_QUERY_AVOID_EXPRESSION_INLINING' value='no' />
+                  <customization name='CAP_QUERY_BLENDING_ALWAYS_USE_LOCAL_MAPPING_TABLES' value='no' />
+                  <customization name='CAP_QUERY_BLENDING_PREFER_LOCAL_MAPPING_TABLES' value='yes' />
+                  <customization name='CAP_QUERY_BLENDING_REMOTE_MAPPING_TABLES' value='yes' />
+                  <customization name='CAP_QUERY_BOOLEXPR_TO_INTEXPR' value='no' />
+                  <customization name='CAP_QUERY_BOOL_IDENTIFIER_TO_LOGICAL' value='no' />
+                  <customization name='CAP_QUERY_CAST_MONEY_AS_NUMERIC' value='no' />
+                  <customization name='CAP_QUERY_CONVERT_DATETIMES_TO_DATES' value='no' />
+                  <customization name='CAP_QUERY_EMPTY_DOMAIN_TOP' value='no' />
+                  <customization name='CAP_QUERY_FORCE_AGGREGATE_MEASURES' value='no' />
+                  <customization name='CAP_QUERY_GROUP_BY_ALIAS' value='yes' />
+                  <customization name='CAP_QUERY_GROUP_BY_DEGREE' value='yes' />
+                  <customization name='CAP_QUERY_HAVING_REQUIRES_GROUP_BY' value='yes' />
+                  <customization name='CAP_QUERY_HAVING_UNSUPPORTED' value='no' />
+                  <customization name='CAP_QUERY_IGNORE_HINT_CHECK_NOT_NULL' value='no' />
+                  <customization name='CAP_QUERY_IGNORE_HINT_MAKE_DOMAIN_PREDICATE' value='no' />
+                  <customization name='CAP_QUERY_INLINE_COMPLEX_GROUPBYS_IN_SELECTS' value='yes' />
+                  <customization name='CAP_QUERY_JOIN_ACROSS_SCHEMAS' value='yes' />
+                  <customization name='CAP_QUERY_JOIN_ASSUME_CONSTRAINED' value='no' />
+                  <customization name='CAP_QUERY_JOIN_PUSH_DOWN_CONDITION_EXPRESSIONS' value='no' />
+                  <customization name='CAP_QUERY_JOIN_REQUIRES_SCOPE' value='no' />
+                  <customization name='CAP_QUERY_JOIN_REQUIRES_SUBQUERY' value='no' />
+                  <customization name='CAP_QUERY_MINMAX_FORCE_GROUPBYS' value='no' />
+                  <customization name='CAP_QUERY_NULL_REQUIRES_CAST' value='yes' />
+                  <customization name='CAP_QUERY_OUTER_JOIN_CONDITION_NO_TRIVIAL' value='no' />
+                  <customization name='CAP_QUERY_RECOMPILE_FAILED_QUERY' value='no' />
+                  <customization name='CAP_QUERY_SELECT_ALIASES_SORTED' value='no' />
+                  <customization name='CAP_QUERY_SORT_BY' value='yes' />
+                  <customization name='CAP_QUERY_SORT_BY_DEGREE' value='no' />
+                  <customization name='CAP_QUERY_SUBQUERIES' value='yes' />
+                  <customization name='CAP_QUERY_SUBQUERIES_WITH_TOP' value='yes' />
+                  <customization name='CAP_QUERY_SUBQUERIES_WITH_TOP_ALTERNATIVE' value='no' />
+                  <customization name='CAP_QUERY_SUBQUERY_QUERY_CONTEXT' value='yes' />
+                  <customization name='CAP_QUERY_SUPPORTS_LODJOINS' value='yes' />
+                  <customization name='CAP_QUERY_SUPPORT_ANALYTIC_FUNCTIONS' value='yes' />
+                  <customization name='CAP_QUERY_SUPPORT_EMPTY_GROUPBY' value='no' />
+                  <customization name='CAP_QUERY_SUPPRESS_CHECK_DOMAIN_LITERALS_THRESHOLD' value='no' />
+                  <customization name='CAP_QUERY_SUPPRESS_NULL_CHECK_QUERIES' value='no' />
+                  <customization name='CAP_QUERY_TAGS_IN_SQL_TEXT' value='no' />
+                  <customization name='CAP_QUERY_TIME_REQUIRES_CAST' value='no' />
+                  <customization name='CAP_QUERY_TOPSTYLE_LIMIT' value='no' />
+                  <customization name='CAP_QUERY_TOPSTYLE_ROWNUM' value='no' />
+                  <customization name='CAP_QUERY_TOPSTYLE_TOP' value='no' />
+                  <customization name='CAP_QUERY_TOP_0_METADATA' value='yes' />
+                  <customization name='CAP_QUERY_TOP_N' value='yes' />
+                  <customization name='CAP_QUERY_USE_DOMAIN_EXCEPT_OPTIMIZATION' value='no' />
+                  <customization name='CAP_QUERY_USE_DOMAIN_RANGES_OPTIMIZATION' value='yes' />
+                  <customization name='CAP_QUERY_USE_DOMAIN_RANGES_OPTIMIZATION_STRINGS' value='no' />
+                  <customization name='CAP_QUERY_USE_QUERY_FUSION' value='yes' />
+                  <customization name='CAP_QUERY_USE_STRCMP_WITH_WHERE_EXISTS' value='no' />
+                  <customization name='CAP_QUERY_WHERE_FALSE_METADATA' value='no' />
+                  <customization name='CAP_RELDATEFILT_CASTTODATE' value='no' />
+                  <customization name='CAP_RENAME_TABLE_USE_LEAF_CONNECTION_DIALECT' value='no' />
+                  <customization name='CAP_SDK_SUPPORTS_PREP_WRITE_TO_DB' value='no' />
+                  <customization name='CAP_SELECT_INTO' value='no' />
+                  <customization name='CAP_SELECT_TOP_INTO' value='no' />
+                  <customization name='CAP_STORED_PROCEDURE_PREFER_TEMP_TABLE' value='no' />
+                  <customization name='CAP_STORED_PROCEDURE_REPAIR_TEMP_TABLE_STRINGS' value='no' />
+                  <customization name='CAP_STORED_PROCEDURE_TEMP_TABLE_FROM_BUFFER' value='no' />
+                  <customization name='CAP_STORED_PROCEDURE_TEMP_TABLE_FROM_NEW_PROTOCOL' value='no' />
+                  <customization name='CAP_SUPPRESS_CONNECTION_POOLING' value='yes' />
+                  <customization name='CAP_SUPPRESS_DISCOVERY_QUERIES' value='no' />
+                  <customization name='CAP_SUPPRESS_ENUMERATE_SCHEMAS_VIA_SQL' value='yes' />
+                  <customization name='CAP_SUPPRESS_ENUMERATE_TABLES_VIA_SQL' value='yes' />
+                  <customization name='CAP_SUPPRESS_GET_SERVER_TIME' value='yes' />
+                  <customization name='CAP_SUPPRESS_QUICK_FILTER_ACCELERATION_VIEWS' value='no' />
+                  <customization name='CAP_SUPPRESS_TEMP_TABLE_CHECKS' value='no' />
+                </customizations>
+              </connection-customization>
+            </connection>
+          </named-connection>
+        </named-connections>
+        <relation connection='databricks.0tclofn0rqc3yx188yjms17gw5oo' name='fct_mrr' table='[saas_platform].[finance].[fct_mrr]' type='table' />
+        <metadata-records>
+          <metadata-record class='column'>
+            <remote-name>customer_id</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[customer_id]</local-name>
+            <parent-name>[fct_mrr]</parent-name>
+            <remote-alias>customer_id</remote-alias>
+            <ordinal>1</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>255</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_VARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_CHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+            <object-id>[fct_mrr (saas_platform.finance.fct_mrr)_00B56B7BE0524A4498B0057026549C46]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>segment</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[segment]</local-name>
+            <parent-name>[fct_mrr]</parent-name>
+            <remote-alias>segment</remote-alias>
+            <ordinal>2</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>255</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_VARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_CHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+            <object-id>[fct_mrr (saas_platform.finance.fct_mrr)_00B56B7BE0524A4498B0057026549C46]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>country</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[country]</local-name>
+            <parent-name>[fct_mrr]</parent-name>
+            <remote-alias>country</remote-alias>
+            <ordinal>3</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>255</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_VARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_CHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+            <object-id>[fct_mrr (saas_platform.finance.fct_mrr)_00B56B7BE0524A4498B0057026549C46]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>plan</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[plan]</local-name>
+            <parent-name>[fct_mrr]</parent-name>
+            <remote-alias>plan</remote-alias>
+            <ordinal>4</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>255</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_VARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_CHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+            <object-id>[fct_mrr (saas_platform.finance.fct_mrr)_00B56B7BE0524A4498B0057026549C46]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>month</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[month]</local-name>
+            <parent-name>[fct_mrr]</parent-name>
+            <remote-alias>month</remote-alias>
+            <ordinal>5</ordinal>
+            <local-type>datetime</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_TYPE_TIMESTAMP&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_TYPE_TIMESTAMP&quot;</attribute>
+            </attributes>
+            <object-id>[fct_mrr (saas_platform.finance.fct_mrr)_00B56B7BE0524A4498B0057026549C46]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>mrr</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[mrr]</local-name>
+            <parent-name>[fct_mrr]</parent-name>
+            <remote-alias>mrr</remote-alias>
+            <ordinal>6</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_DECIMAL&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+            <object-id>[fct_mrr (saas_platform.finance.fct_mrr)_00B56B7BE0524A4498B0057026549C46]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>prev_mrr</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[prev_mrr]</local-name>
+            <parent-name>[fct_mrr]</parent-name>
+            <remote-alias>prev_mrr</remote-alias>
+            <ordinal>7</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>10</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_DECIMAL&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+            <object-id>[fct_mrr (saas_platform.finance.fct_mrr)_00B56B7BE0524A4498B0057026549C46]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>mrr_movement_type</remote-name>
+            <remote-type>129</remote-type>
+            <local-name>[mrr_movement_type]</local-name>
+            <parent-name>[fct_mrr]</parent-name>
+            <remote-alias>mrr_movement_type</remote-alias>
+            <ordinal>8</ordinal>
+            <local-type>string</local-type>
+            <aggregation>Count</aggregation>
+            <width>255</width>
+            <contains-null>true</contains-null>
+            <collation flag='0' name='binary' />
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_VARCHAR&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_CHAR&quot;</attribute>
+              <attribute datatype='string' name='TypeIsVarchar'>&quot;true&quot;</attribute>
+            </attributes>
+            <object-id>[fct_mrr (saas_platform.finance.fct_mrr)_00B56B7BE0524A4498B0057026549C46]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>mrr_movement_amount</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[mrr_movement_amount]</local-name>
+            <parent-name>[fct_mrr]</parent-name>
+            <remote-alias>mrr_movement_amount</remote-alias>
+            <ordinal>9</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>12</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_DECIMAL&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+            <object-id>[fct_mrr (saas_platform.finance.fct_mrr)_00B56B7BE0524A4498B0057026549C46]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>new_mrr</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[new_mrr]</local-name>
+            <parent-name>[fct_mrr]</parent-name>
+            <remote-alias>new_mrr</remote-alias>
+            <ordinal>10</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>12</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_DECIMAL&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+            <object-id>[fct_mrr (saas_platform.finance.fct_mrr)_00B56B7BE0524A4498B0057026549C46]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>expansion_mrr</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[expansion_mrr]</local-name>
+            <parent-name>[fct_mrr]</parent-name>
+            <remote-alias>expansion_mrr</remote-alias>
+            <ordinal>11</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>12</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_DECIMAL&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+            <object-id>[fct_mrr (saas_platform.finance.fct_mrr)_00B56B7BE0524A4498B0057026549C46]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>contraction_mrr</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[contraction_mrr]</local-name>
+            <parent-name>[fct_mrr]</parent-name>
+            <remote-alias>contraction_mrr</remote-alias>
+            <ordinal>12</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>12</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_DECIMAL&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+            <object-id>[fct_mrr (saas_platform.finance.fct_mrr)_00B56B7BE0524A4498B0057026549C46]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>churned_mrr</remote-name>
+            <remote-type>131</remote-type>
+            <local-name>[churned_mrr]</local-name>
+            <parent-name>[fct_mrr]</parent-name>
+            <remote-alias>churned_mrr</remote-alias>
+            <ordinal>13</ordinal>
+            <local-type>real</local-type>
+            <aggregation>Sum</aggregation>
+            <precision>12</precision>
+            <scale>2</scale>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_DECIMAL&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_NUMERIC&quot;</attribute>
+            </attributes>
+            <object-id>[fct_mrr (saas_platform.finance.fct_mrr)_00B56B7BE0524A4498B0057026549C46]</object-id>
+          </metadata-record>
+          <metadata-record class='column'>
+            <remote-name>updated_at</remote-name>
+            <remote-type>7</remote-type>
+            <local-name>[updated_at]</local-name>
+            <parent-name>[fct_mrr]</parent-name>
+            <remote-alias>updated_at</remote-alias>
+            <ordinal>14</ordinal>
+            <local-type>datetime</local-type>
+            <aggregation>Year</aggregation>
+            <contains-null>true</contains-null>
+            <attributes>
+              <attribute datatype='string' name='DebugRemoteType'>&quot;SQL_TYPE_TIMESTAMP&quot;</attribute>
+              <attribute datatype='string' name='DebugWireType'>&quot;SQL_C_TYPE_TIMESTAMP&quot;</attribute>
+            </attributes>
+            <object-id>[fct_mrr (saas_platform.finance.fct_mrr)_00B56B7BE0524A4498B0057026549C46]</object-id>
+          </metadata-record>
+        </metadata-records>
+      </connection>
+      <aliases enabled='yes' />
+      <column caption='fct_mrr' datatype='table' name='[__tableau_internal_object_id__].[fct_mrr (saas_platform.finance.fct_mrr)_00B56B7BE0524A4498B0057026549C46]' role='measure' type='quantitative' />
+      <column caption='Churned Mrr' datatype='real' name='[churned_mrr]' role='measure' type='quantitative' />
+      <column caption='Contraction Mrr' datatype='real' name='[contraction_mrr]' role='measure' type='quantitative' />
+      <column caption='Country' datatype='string' name='[country]' role='dimension' semantic-role='[Country].[ISO3166_2]' type='nominal' />
+      <column caption='Customer Id' datatype='string' name='[customer_id]' role='dimension' type='nominal' />
+      <column caption='Expansion Mrr' datatype='real' name='[expansion_mrr]' role='measure' type='quantitative' />
+      <column caption='Month' datatype='datetime' name='[month]' role='dimension' type='ordinal' />
+      <column caption='Mrr' datatype='real' name='[mrr]' role='measure' type='quantitative' />
+      <column caption='Mrr Movement Amount' datatype='real' name='[mrr_movement_amount]' role='measure' type='quantitative' />
+      <column caption='Mrr Movement Type' datatype='string' name='[mrr_movement_type]' role='dimension' type='nominal' />
+      <column caption='New Mrr' datatype='real' name='[new_mrr]' role='measure' type='quantitative' />
+      <column caption='Plan' datatype='string' name='[plan]' role='dimension' type='nominal' />
+      <column caption='Prev Mrr' datatype='real' name='[prev_mrr]' role='measure' type='quantitative' />
+      <column caption='Segment' datatype='string' name='[segment]' role='dimension' type='nominal' />
+      <column caption='Updated At' datatype='datetime' name='[updated_at]' role='dimension' type='ordinal' />
+      <layout dim-ordering='alphabetic' measure-ordering='alphabetic' show-structure='true' />
+      <semantic-values>
+        <semantic-value key='[Country].[Name]' value='&quot;España&quot;' />
+      </semantic-values>
+      <date-options start-of-week='monday' />
+      <object-graph>
+        <objects>
+          <object caption='fct_mrr' id='fct_mrr (saas_platform.finance.fct_mrr)_00B56B7BE0524A4498B0057026549C46'>
+            <properties context=''>
+              <relation connection='databricks.0tclofn0rqc3yx188yjms17gw5oo' name='fct_mrr' table='[saas_platform].[finance].[fct_mrr]' type='table' />
+            </properties>
+          </object>
+        </objects>
+      </object-graph>
+    </datasource>
+  </datasources>
+  <worksheets>
+    <worksheet name='Hoja 1'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='fct_mrr (saas_platform.finance.fct_mrr) (finance)' name='federated.10kbhh91ppztqy1ckdj5q16jhg6e' />
+          </datasources>
+          <datasource-dependencies datasource='federated.10kbhh91ppztqy1ckdj5q16jhg6e'>
+            <column caption='Month' datatype='datetime' name='[month]' role='dimension' type='ordinal' />
+            <column caption='Mrr' datatype='real' name='[mrr]' role='measure' type='quantitative' />
+            <column caption='Mrr Movement Type' datatype='string' name='[mrr_movement_type]' role='dimension' type='nominal' />
+            <column-instance column='[mrr_movement_type]' derivation='None' name='[none:mrr_movement_type:nk]' pivot='key' type='nominal' />
+            <column-instance column='[mrr]' derivation='Sum' name='[sum:mrr:qk]' pivot='key' type='quantitative' />
+            <column-instance column='[month]' derivation='Month-Trunc' name='[tmn:month:qk]' pivot='key' type='quantitative' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane id='4' selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+            <encodings>
+              <color column='[federated.10kbhh91ppztqy1ckdj5q16jhg6e].[none:mrr_movement_type:nk]' />
+            </encodings>
+          </pane>
+        </panes>
+        <rows>[federated.10kbhh91ppztqy1ckdj5q16jhg6e].[sum:mrr:qk]</rows>
+        <cols>[federated.10kbhh91ppztqy1ckdj5q16jhg6e].[tmn:month:qk]</cols>
+      </table>
+      <simple-id uuid='{0756E060-3370-40AF-A207-A8888FBCB580}' />
+    </worksheet>
+  </worksheets>
+  <windows saved-dpi-scale-factor='1.5' source-height='44'>
+    <window class='worksheet' maximized='true' name='Hoja 1'>
+      <cards>
+        <edge name='left'>
+          <strip size='160'>
+            <card type='pages' />
+            <card type='filters' />
+            <card type='marks' />
+          </strip>
+        </edge>
+        <edge name='top'>
+          <strip size='2147483647'>
+            <card type='columns' />
+          </strip>
+          <strip size='2147483647'>
+            <card type='rows' />
+          </strip>
+          <strip size='30'>
+            <card type='title' />
+          </strip>
+        </edge>
+        <edge name='right'>
+          <strip size='174'>
+            <card pane-specification-id='4' param='[federated.10kbhh91ppztqy1ckdj5q16jhg6e].[none:mrr_movement_type:nk]' type='color' />
+          </strip>
+        </edge>
+      </cards>
+      <simple-id uuid='{269A1BC1-06E6-4ABA-9221-950B10B1CCD9}' />
+    </window>
+  </windows>
+  <thumbnails>
+    <thumbnail height='192' name='Hoja 1' width='192'>
+      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
+      YII=
+    </thumbnail>
+  </thumbnails>
+</workbook>

@@ -1,7 +1,7 @@
 # Progress — SaaS Analytics Platform
-Última actualización: 2026-05-29
+Última actualización: 2026-05-30
 
-## Estado actual: Pipeline completo end-to-end en Databricks prod ✅
+## Estado actual: Pipeline completo + AEGIS AI Dashboard diseñado ✅
 
 ---
 
@@ -63,18 +63,38 @@
 - `dbt test --target prod` → 54/54 tests PASS
 - Pipeline ingesta Databricks: 8/8 tablas, 100% quality score, ~6s/tabla
 
+### dbt schemas limpios (2026-05-30)
+- Macro `generate_schema_name.sql` creada en `dbt/macros/`
+- Schemas Gold sin prefijos: `finance`, `retention`, `growth`, `intermediate`, `staging`, `seeds`, `bronze`
+- `dbt run --target prod` → 18/18 PASS con nombres de schema correctos
+
+### Tableau / AEGIS AI (2026-05-30 — Fase 1 diseñada)
+- Tableau Desktop instalado y conectado a Databricks (`saas_platform` catálogo)
+- Archivo `tableau/AEGIS_AI_Executive_Intelligence.twb` creado
+- Dashboard AEGIS AI diseñado completamente:
+  - Arquitectura: Header · Hero Number · AI Executive Brief · Signal Panel · AI Detection Feed · Forecast Confidence Band
+  - Paleta fondo: `#07111F` / `#0E1B2E` / `#0F2040` / `#1A2F4A`
+  - Colores acento: `#3B82F6` / `#22D3EE` / `#8B5CF6` / `#00D7A0` / `#FFB547` / `#FF5C5C`
+  - Canvas: 1600×900px Fixed
+  - Fase 2 pendiente: gradientes y profundidad visual (fondo PNG)
+
 ---
 
 ## Pendiente ⬜
 
 ### Próxima sesión (empezar aquí)
-1. **Tableau Public** — conectar tablas Gold de Databricks y construir dashboard
-   - Conectar a `saas_platform.finance.fct_mrr`, `fct_revenue_expansion`
-   - Conectar a `saas_platform.retention.fct_cohort_retention`, `fct_churn`, `fct_ltv`
-   - Conectar a `saas_platform.growth.fct_customer_acquisition`, `fct_activation_funnel`
-2. **Post LinkedIn** — carousel con capturas del proyecto
+1. **Tableau — construir componentes** en orden:
+   - Header (primer componente)
+   - Hero Number (MRR, Churn, NRR, LTV)
+   - AI Executive Brief
+   - Signal Panel
+   - AI Detection Feed
+   - Forecast Confidence Band
+2. **Tableau — Fase 2**: fondo PNG con gradientes ambientales
+3. **Publicar** en Tableau Public
+4. **Post LinkedIn** — carousel con capturas del proyecto
    - Imagen principal: airflow_parallel_green.png
-   - Slides: cohort heatmap, MRR waterfall, dbt lineage, KPI dashboard
+   - Slides: cohort heatmap, MRR waterfall, dbt lineage, AEGIS AI dashboard
 
 ### Stack final confirmado
 ```
