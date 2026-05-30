@@ -278,7 +278,7 @@ class DatabaseConnection:
                 FROM '{volume_path}'
                 FILEFORMAT = PARQUET
                 FORMAT_OPTIONS ('mergeSchema' = 'true')
-                COPY_OPTIONS ('mergeSchema' = 'true')
+                COPY_OPTIONS ('mergeSchema' = 'true', 'force' = 'true')
             """)
             cursor.close()
             log.info(f"Escrito en Databricks: {catalog}.{table_name} ({len(df):,} filas)")

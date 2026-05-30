@@ -3,6 +3,10 @@ version: 2
 models:
   - name: fct_mrr
     description: "MRR mensual con movimientos New/Expansion/Contraction/Churned"
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "count(*) >= 5000"
+          name: fct_mrr_min_rows
     columns:
       - name: customer_id
         tests: [not_null]
@@ -16,6 +20,10 @@ models:
 
   - name: fct_revenue_expansion
     description: "NRR, ARR y Net New MRR agrupados por mes"
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "count(*) >= 20"
+          name: fct_revenue_expansion_min_rows
     columns:
       - name: month
         tests: [not_null, unique]

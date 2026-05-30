@@ -3,6 +3,10 @@ version: 2
 models:
   - name: fct_customer_acquisition
     description: "CAC, conversion rate y métricas de adquisición por mes y canal"
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "count(*) >= 100"
+          name: fct_customer_acquisition_min_rows
     columns:
       - name: month
         tests: [not_null]
@@ -13,6 +17,10 @@ models:
 
   - name: fct_activation_funnel
     description: "Funnel de activación — 3 pasos por customer"
+    tests:
+      - dbt_utils.expression_is_true:
+          expression: "count(*) >= 500"
+          name: fct_activation_funnel_min_rows
     columns:
       - name: customer_id
         tests: [not_null, unique]
