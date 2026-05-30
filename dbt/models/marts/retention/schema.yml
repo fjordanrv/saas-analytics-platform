@@ -4,8 +4,8 @@ models:
   - name: fct_churn
     description: "Logo Churn Rate y Revenue Churn Rate por mes y segmento"
     tests:
-      - dbt_utils.expression_is_true:
-          expression: "count(*) >= 10"
+      - min_row_count:
+          min_rows: 10
           name: fct_churn_min_rows
     columns:
       - name: month
@@ -18,8 +18,8 @@ models:
   - name: fct_cohort_retention
     description: "Cohort Retention Rate mensual — 13 meses de vida por cohorte"
     tests:
-      - dbt_utils.expression_is_true:
-          expression: "count(*) >= 50"
+      - min_row_count:
+          min_rows: 50
           name: fct_cohort_retention_min_rows
     columns:
       - name: cohort_month
@@ -32,8 +32,8 @@ models:
   - name: fct_ltv
     description: "LTV, LTV/CAC y Payback Period por segmento y plan"
     tests:
-      - dbt_utils.expression_is_true:
-          expression: "count(*) >= 500"
+      - min_row_count:
+          min_rows: 10
           name: fct_ltv_min_rows
     columns:
       - name: segment

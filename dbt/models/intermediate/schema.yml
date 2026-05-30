@@ -4,8 +4,8 @@ models:
   - name: int_customer_lifecycle
     description: "Customer enriquecido con company, subscription y campos calculados"
     tests:
-      - dbt_utils.expression_is_true:
-          expression: "count(*) >= 500"
+      - min_row_count:
+          min_rows: 500
           name: int_customer_lifecycle_min_rows
     columns:
       - name: customer_id
@@ -18,8 +18,8 @@ models:
   - name: int_subscription_metrics
     description: "Métricas de suscripciones y pagos por customer"
     tests:
-      - dbt_utils.expression_is_true:
-          expression: "count(*) >= 500"
+      - min_row_count:
+          min_rows: 500
           name: int_subscription_metrics_min_rows
     columns:
       - name: customer_id
@@ -33,8 +33,8 @@ models:
   - name: int_product_engagement
     description: "Métricas de engagement de producto últimos 30 días"
     tests:
-      - dbt_utils.expression_is_true:
-          expression: "count(*) >= 500"
+      - min_row_count:
+          min_rows: 500
           name: int_product_engagement_min_rows
     columns:
       - name: customer_id
