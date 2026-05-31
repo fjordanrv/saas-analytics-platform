@@ -66,7 +66,7 @@ FEATURES = [
 DEVICES = {"web": 0.65, "mobile": 0.25, "api": 0.10}
 CHURN_RATE = 0.03
 N_COMPANIES = 500
-N_CUSTOMERS = 1000
+N_CUSTOMERS = 3000
 N_EVENTS = 50000
 N_LEADS = 3000
 N_NPS = 1500
@@ -160,14 +160,20 @@ def generate_customers(companies_df: pd.DataFrame) -> pd.DataFrame:
         mrr_lo, mrr_hi = PLANS[plan]["mrr_range"]
         mrr    = float(np.random.randint(mrr_lo, mrr_hi + 1))
 
-        signup_date = fake.date_between(
-            start_date=date(2022, 1, 1),
-            end_date=date(2024, 6, 1),
-        )
+        if i < 1000:
+            signup_date = date(2022, 1, 1)
+        else:
+            signup_date = fake.date_between(
+                start_date=date(2022, 2, 1),
+                end_date=date(2024, 5, 1),
+            )
 
         churn_date = None
         if status == "churned":
-            churn_date = signup_date + timedelta(days=random.randint(90, 730))
+            churn_date = min(
+                signup_date + timedelta(days=random.randint(90, 730)),
+                date(2024, 5, 31)
+            )
 
         is_b2b     = random.random() < 0.80
         company_id = random.choice(company_ids) if is_b2b else None
@@ -288,7 +294,7 @@ def generate_payments(subscriptions_df: pd.DataFrame) -> pd.DataFrame:
     """
     log.info("Generando pagos...")
 
-    today       = date(2026, 5, 23)
+    today       = date(2024, 5, 31)
     pay_methods = ["credit_card", "bank_transfer", "paypal"]
     pay_weights = [0.60, 0.25, 0.15]
 
@@ -321,7 +327,7 @@ def generate_payments(subscriptions_df: pd.DataFrame) -> pd.DataFrame:
                 attempt    = 1
 
             records.append({
-                "payment_id":     f"pay_{str(uuid.uuid4())[:8]}",
+                "payment_id":     f"pay_{str(uuid.uuid4())[:12]}",
                 "sub_id":         sub["sub_id"],
                 "customer_id":    sub["customer_id"],
                 "amount":         sub["mrr"],
